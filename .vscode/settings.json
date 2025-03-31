@@ -1,0 +1,23 @@
+{
+  "files.associations": {
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "string": "cpp",
+    "fstream": "cpp",
+    "algorithm": "cpp",
+    "vector": "cpp",
+    "chrono": "cpp",
+    "optional": "cpp",
+    "system_error": "cpp",
+    "type_traits": "cpp",
+    "xlocnum": "cpp",
+    "xtr1common": "cpp",
+    "xstring": "cpp",
+    "regex": "cpp",
+    "xlocmes": "cpp",
+    "initializer_list": "cpp",
+    "xutility": "cpp",
+    "utility": "cpp",
+    "map": "cpp"
+  }
+}
