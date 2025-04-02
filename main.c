@@ -84,7 +84,7 @@ int peek(struct Queue *q){
 void enqueue(struct Queue *q, int val){
   // printf("ENQUEUE");
   if(isFull(q)) {
-    printf("Queue llena");
+    printf("Queue llena\n");
     return;
   }
   // printf("ENQUEUE2");
@@ -112,7 +112,8 @@ int dequeue(struct Queue *q){
   res = q->front;
 
   if(isEmpty(q)){
-    printf("Queue vacía");
+    printf("Queue vacia\n");
+    return -1;
   } else {
     q->front = q->front->next;
     q->count--;
@@ -144,12 +145,13 @@ int main(){
   //   push(&stack, i);
   // }
   // printf("Top: %d\n", peek(&stack));
-
+  
   // Stack Test Cases End
-
+  
   // QUEUEU Test Cases Start
   struct Queue q;
-  initialize(&q);
+  initialize(&q);  
+  printf("Dequeue: %d\n", dequeue(&q));
   enqueue(&q, 1);
   printf("Top: %d\n", peek(&q));
   enqueue(&q, 2);
@@ -158,6 +160,10 @@ int main(){
   printf("Top: %d\n", peek(&q));
   printf("Dequeue: %d\n", dequeue(&q));
   printf("Top: %d\n", peek(&q));
+  
+  for(int i = 1; i <= 99; i++){
+    enqueue(&q, i);
+  }
 
 
   return 0;
