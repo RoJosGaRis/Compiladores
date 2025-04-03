@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "uthash.h"
 
 #define MAX_SIZE 100
 
@@ -124,6 +125,32 @@ int dequeue(struct Queue *q){
 
 // QUEUE END
 
+// HASH START
+struct hashEntry{
+  int id;
+  char name[10];
+  UT_hash_handle hh;
+} ;
+
+void addHashEntry(struct hashEntry **table, int id, char *value){
+  struct hashEntry *entry;
+
+  HASH_FIND_INT(*table, &id, entry);
+  if(entry == NULL){
+    entry = (struct hashEntry*)malloc(sizeof *entry);
+    entry->id = id;
+    HASH_ADD_INT(*table, id, entry);
+  } 
+  strcpy(entry->name, value);
+}
+
+char *findEntry(struct hashEntry **table, int id){
+  struct hashEntry *entry;
+  HASH_FIND_INT(*table, &id, entry);
+  return entry->name;
+}
+// HASH END
+
 int main(){
 
   // Stack Test Cases Start
@@ -148,23 +175,33 @@ int main(){
   
   // Stack Test Cases End
   
-  // QUEUEU Test Cases Start
-  struct Queue q;
-  initialize(&q);  
-  printf("Dequeue: %d\n", dequeue(&q));
-  enqueue(&q, 1);
-  printf("Top: %d\n", peek(&q));
-  enqueue(&q, 2);
-  printf("Top: %d\n", peek(&q));
-  enqueue(&q, 3);
-  printf("Top: %d\n", peek(&q));
-  printf("Dequeue: %d\n", dequeue(&q));
-  printf("Top: %d\n", peek(&q));
+  // // QUEUE Test Cases Start
+  // struct Queue q;
+  // initialize(&q);  
+  // printf("Dequeue: %d\n", dequeue(&q));
+  // enqueue(&q, 1);
+  // printf("Top: %d\n", peek(&q));
+  // enqueue(&q, 2);
+  // printf("Top: %d\n", peek(&q));
+  // enqueue(&q, 3);
+  // printf("Top: %d\n", peek(&q));
+  // printf("Dequeue: %d\n", dequeue(&q));
+  // printf("Top: %d\n", peek(&q));
   
-  for(int i = 1; i <= 99; i++){
-    enqueue(&q, i);
-  }
+  // for(int i = 1; i <= 99; i++){
+  //   enqueue(&q, i);
+  // }
+  // // QUEUE Test Cases End
 
+  // HASH Test Cases Start
+  struct hashEntry * identifiersTable = NULL;
+  addHashEntry(&identifiersTable, 0, (char*)"Hello");
+  addHashEntry(&identifiersTable, 1, (char*)",");
+  addHashEntry(&identifiersTable, 2, (char*)"World");
+  printf("%s", findEntry(&identifiersTable, 2));
+  printf("%s", findEntry(&identifiersTable, 1));
+  printf("%s", findEntry(&identifiersTable, 0));
+  // HASH Test Cases End
 
   return 0;
 }
