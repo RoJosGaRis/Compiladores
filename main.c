@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "uthash.h"
+#include "utils\uthash.h"
 
 #define MAX_SIZE 100
 
@@ -154,43 +154,43 @@ char *findEntry(struct hashEntry **table, int id){
 int main(){
 
   // Stack Test Cases Start
-  // Stack stack;
-  // initialize(&stack);
+  Stack stack;
+  initialize(&stack);
   
-  // push(&stack, 1);
-  // printf("Top: %d\n", peek(&stack));
-  // push(&stack, 2);
-  // printf("Top: %d\n", peek(&stack));
-  // printf("Sacando: %d\n", pop(&stack));
-  // printf("%s\n", isEmpty(&stack) ? "Vacio" : "No vacio");
-  // printf("Top: %d\n", peek(&stack));
-  // printf("Sacando: %d\n", pop(&stack));
-  // printf("%s\n", isEmpty(&stack) ? "Vacio" : "No vacio");
-  // printf("Sacando: %d\n", pop(&stack));
+  push(&stack, 1);
+  printf("Top: %d\n", peek(&stack));
+  push(&stack, 2);
+  printf("Top: %d\n", peek(&stack));
+  printf("Sacando: %d\n", pop(&stack));
+  printf("%s\n", isEmpty(&stack) ? "Vacio" : "No vacio");
+  printf("Top: %d\n", peek(&stack));
+  printf("Sacando: %d\n", pop(&stack));
+  printf("%s\n", isEmpty(&stack) ? "Vacio" : "No vacio");
+  printf("Sacando: %d\n", pop(&stack));
 
-  // for(int i = 1; i <= 101; i++){
-  //   push(&stack, i);
-  // }
-  // printf("Top: %d\n", peek(&stack));
+  for(int i = 1; i <= 101; i++){
+    push(&stack, i);
+  }
+  printf("Top: %d\n", peek(&stack));
   
   // Stack Test Cases End
   
-  // // QUEUE Test Cases Start
-  // struct Queue q;
-  // initialize(&q);  
-  // printf("Dequeue: %d\n", dequeue(&q));
-  // enqueue(&q, 1);
-  // printf("Top: %d\n", peek(&q));
-  // enqueue(&q, 2);
-  // printf("Top: %d\n", peek(&q));
-  // enqueue(&q, 3);
-  // printf("Top: %d\n", peek(&q));
-  // printf("Dequeue: %d\n", dequeue(&q));
-  // printf("Top: %d\n", peek(&q));
+  // QUEUE Test Cases Start
+  struct Queue q;
+  initialize(&q);  
+  printf("Dequeue: %d\n", dequeue(&q));
+  enqueue(&q, 1);
+  printf("Top: %d\n", peek(&q));
+  enqueue(&q, 2);
+  printf("Top: %d\n", peek(&q));
+  enqueue(&q, 3);
+  printf("Top: %d\n", peek(&q));
+  printf("Dequeue: %d\n", dequeue(&q));
+  printf("Top: %d\n", peek(&q));
   
-  // for(int i = 1; i <= 99; i++){
-  //   enqueue(&q, i);
-  // }
+  for(int i = 1; i <= 99; i++){
+    enqueue(&q, i);
+  }
   // // QUEUE Test Cases End
 
   // HASH Test Cases Start
