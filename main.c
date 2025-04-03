@@ -144,10 +144,28 @@ void addHashEntry(struct hashEntry **table, int id, char *value){
   strcpy(entry->name, value);
 }
 
+void deleteHashEntry(struct hashEntry **table, int id){
+  struct hashEntry *entry;
+
+  HASH_FIND_INT(*table, &id, entry);
+  if(entry != NULL){
+    HASH_DEL(*table, entry);
+    printf("Elminando %s\n", entry->name);
+    free(entry);
+  } else {
+    printf("No existe el objeto: %d \n", id);
+  }
+}
+
 char *findEntry(struct hashEntry **table, int id){
   struct hashEntry *entry;
   HASH_FIND_INT(*table, &id, entry);
-  return entry->name;
+  if(entry != NULL){
+    return entry->name;
+  } else {
+    printf("No existe el objeto: %d\n", id);
+    return NULL;
+  }
 }
 // HASH END
 
@@ -201,6 +219,9 @@ int main(){
   printf("%s", findEntry(&identifiersTable, 2));
   printf("%s", findEntry(&identifiersTable, 1));
   printf("%s", findEntry(&identifiersTable, 0));
+  printf("\n");
+  deleteHashEntry(&identifiersTable, 0);
+  deleteHashEntry(&identifiersTable, 0);
   // HASH Test Cases End
 
   return 0;

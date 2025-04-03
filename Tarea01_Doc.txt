@@ -1,0 +1,32 @@
+Stack (Pila)
+Se inicializa la pila.
+
+Se insertan valores (1 y 2) y se verifica el tope (peek()).
+
+Se extrae un elemento (pop()) y se revisa si está vacía (isEmpty()).
+
+Se intenta hacer pop() en una pila vacía.
+
+Se prueba insertar más elementos que el límite (MAX_SIZE = 100).
+
+Queue (Cola)
+Se inicializa la cola.
+
+Se intenta hacer dequeue() en una cola vacía.
+
+Se agregan elementos (1, 2 y 3) y se verifica el frente de la cola (peek()).
+
+Se eliminan elementos (dequeue()) y se revisa si el frente cambia.
+
+Se prueba la inserción de elementos hasta el límite (MAX_SIZE = 100).
+
+Hash Table (Tabla Hash)
+Se inicializa la tabla hash.
+
+Se insertan tres pares clave-valor (0 → "Hello", 1 → ",", 2 → "World").
+
+Se recuperan los valores por clave (findEntry()) y se imprimen.
+
+Se elimina una entrada (deleteHashEntry(0)) y se verifica su inexistencia.
+
+Se intenta eliminar un valor inexistente (deleteHashEntry(0)) para probar la validación.
