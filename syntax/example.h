@@ -1,7 +1,7 @@
 #define TKN_PROGRAM                      1
-#define TKN_ID                           2
-#define TKN_SEMI_COLON                   3
-#define TKN_MAIN                         4
+#define TKN_SEMI_COLON                   2
+#define TKN_MAIN                         3
+#define TKN_ID                           4
 #define TKN_END                          5
 #define TKN_VAR                          6
 #define TKN_COLON                        7

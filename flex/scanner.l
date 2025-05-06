@@ -45,7 +45,6 @@
 [a-zA-Z][0-9a-zA-Z_]*     { return TKN_ID; }
 [0-9]+                    { return TKN_INT_CONST; }
 [0-9]+"."[0-9]*           { return TKN_FLOAT_CONST; }
-[ \t]+                    { /* ignore whitespace */ }
-.                         { return 0; }
+[ \t\n\r]+                    { /* ignore whitespace */ }
 
 %%

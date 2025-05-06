@@ -1,0 +1,19 @@
+program name;
+var variable : int; variable2, variable3 : float;
+void function_name(a:float, b:int, c:int) [
+  var variable1, variable2 : int; variable2 : float;
+  {
+    variable3 = variablex2;
+  }
+];
+void function_name_2(d:int, e:float, f:float) [
+  var variable5, variable6 : int; variable7 : float;
+  {
+    variable3 = variablex2;
+  }
+];
+main
+{
+    variable = variable2 + variable3;
+}
+end

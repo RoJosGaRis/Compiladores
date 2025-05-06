@@ -19,6 +19,14 @@
     "xutility": "cpp",
     "utility": "cpp",
     "map": "cpp",
-    "scanner.h": "c"
+    "scanner.h": "c",
+    "locale": "cpp",
+    "thread": "cpp",
+    "xlocale": "cpp",
+    "xlocmon": "cpp",
+    "xloctime": "cpp",
+    "tables.h": "c",
+    "stdio.h": "c",
+    "hashdriver.h": "c"
   }
 }

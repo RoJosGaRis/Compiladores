@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "hashDriver.h"
+
+void handleVariableList(StringList* vars, ParserContext * ctx, const char* type){
+  StringList* node = vars;
+  while (node != NULL) {
+    printf("Adding variable %s of type %s to %s\n", node->id, type, ctx->currentFunction ? ctx->currentFunction->name : ctx->programFunction->name);
+    if(ctx->currentFunction == NULL)
+    {
+      addVariable(&ctx->programFunction->variableTable, node->id, type);
+    } 
+    else
+    {
+      addVariable(&ctx->currentFunction->variableTable, node->id, type);
+    }
+    StringList* temp = node;
+    node = node->next;
+    free(temp->id);
+    free(temp);
+  }
+}
+
+void addVariable(VariableEntry **table, const char *id, const char* type){
+  VariableEntry *entry;
+
+  HASH_FIND_STR(*table, id, entry);
+  if(entry == NULL){
+    entry = (VariableEntry*)malloc(sizeof *entry);
+    entry->name = strdup(id);
+    entry->type = stringToType(type);
+    HASH_ADD_STR(*table, name, entry);
+  } else {
+    printf("Error: Variable '%s' ya declarada\n", id);
+  }
+}
+
+void deleteVariable(struct VariableEntry **table, char * id){
+  struct VariableEntry *entry;
+
+  HASH_FIND_STR(*table, id, entry);
+  if(entry != NULL){
+    HASH_DEL(*table, entry);
+    printf("Elminando %s\n", entry->name);
+    free(entry);
+  } else {
+    printf("No existe el objeto: %d \n", id);
+  }
+}
+
+struct VariableEntry *findVariable(struct VariableEntry **table, char *id){
+  struct VariableEntry *entry;
+  HASH_FIND_STR(*table, id, entry);
+  if(entry != NULL){
+    return entry;
+  } else {
+    printf("No existe el objeto: %d\n", id);
+    return NULL;
+  }
+}
+
+void printVariableTable(VariableEntry* table) {
+    VariableEntry* current;
+    VariableEntry * tmp;
+    HASH_ITER(hh, table, current, tmp) {
+        printf("Nombre: %s, Tipo: ", current->name);
+
+        // Opcional: imprime tipo como string
+        switch (current->type) {
+            case TYPE_INT: printf("int\n"); break;
+            case TYPE_FLOAT: printf("float\n"); break;
+            case TYPE_STRING: printf("string\n"); break;
+            default: printf("desconocido\n"); break;
+        }
+    }
+}
+
+void addFunction(struct FunctionEntry **table, const char *id, const char* type){
+  struct FunctionEntry *entry;
+  
+  HASH_FIND_STR(*table, id, entry);
+  if(entry == NULL){
+    entry = (FunctionEntry*)malloc(sizeof *entry);
+    entry->name = strdup(id);
+    entry->type = stringToType(type);
+    entry->variableTable = NULL;
+    HASH_ADD_STR(*table, name, entry);
+  } else {
+    printf("Error: Función '%s' ya declarada\n", id);
+  }
+}
+
+void deleteFunction(struct FunctionEntry **table, char * id){
+  struct FunctionEntry *entry;
+
+  HASH_FIND_STR(*table, id, entry);
+  if(entry != NULL){
+    HASH_DEL(*table, entry);
+    printf("Elminando %s\n", entry->name);
+    free(entry);
+  } else {
+    printf("No existe el objeto: %d \n", id);
+  }
+}
+
+struct FunctionEntry *findFunction(struct FunctionEntry **table, const char *id){
+  struct FunctionEntry *entry;
+  HASH_FIND_STR(*table, id, entry);
+  if(entry != NULL){
+    return entry;
+  } else {
+    printf("No existe el objeto: %d\n", id);
+    return NULL;
+  }
+}
+
+void printFunctionTable(FunctionEntry* table) {
+    FunctionEntry* current;
+    FunctionEntry * tmp;
+    printf("=== Tabla de Funciones ===\n");
+    HASH_ITER(hh, table, current, tmp) {
+        printf("=== Variables de Funcion %s ===\n", current->name);
+        printVariableTable(current->variableTable);
+        // // Opcional: imprime tipo como string
+        // switch (current->type) {
+        //     case TYPE_INT: printf("int\n"); break;
+        //     case TYPE_FLOAT: printf("float\n"); break;
+        //     case TYPE_STRING: printf("string\n"); break;
+        //     default: printf("desconocido\n"); break;
+        // }
+    }
+}

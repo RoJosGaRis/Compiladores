@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "syntax/example.h"
+#include "syntax/queue.h"
+#include "syntax/tokenNode.h"
+#include "utils/hashDriver.h"
+#include "flex/scanner.h"
+
+void* ParseAlloc(void* (*allocProc)(size_t));
+void* Parse(void*, int, const char*, ParserContext * ctx);
+void* ParseFree(void*, void(*freeProc)(void*));
+
+
+int main(int argc, char** argv){
+  
+  FILE* file = fopen(argv[1], "r");
+  if (!file) {
+    fprintf(stderr, "Error: Cannot open file %s\n", argv[1]);
+    return 1;
+  }
+
+  ParserContext * ctx = (ParserContext*)malloc(sizeof(ParserContext));
+  ctx->functionTable = NULL;
+  ctx->currentFunction = NULL;
+
+  yyscan_t scanner;
+  yylex_init(&scanner);
+  yyset_in(file, scanner);
+  
+  struct Queue q;
+  initialize(&q);
+  
+  void * parser = ParseAlloc(malloc);
+  
+  int lexCode;
+  do{
+    lexCode = yylex(scanner);
+    TokenNode* newToken = (TokenNode*)malloc(sizeof(TokenNode));
+    newToken->text = strdup(yyget_text(scanner));
+    newToken->type = lexCode;
+    enqueue(&q, newToken);
+    
+    Parse(parser, newToken->type, newToken->text, ctx);
+  } while(lexCode > 0);
+  printFunctionTable(ctx->functionTable);
+
+  // TokenNode* token;
+  // while(!isEmpty(&q))
+  // {
+  //   token = dequeue(&q);
+  //   printf("Token: %s - Value: %d\n", token->text, token->type);
+  //   free(token->text);
+  //   free(token);
+  // }
+
+  yylex_destroy(scanner);
+  ParseFree(parser, free);
+  return 0;
+}
