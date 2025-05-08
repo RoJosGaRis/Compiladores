@@ -4,6 +4,7 @@
 #include "syntax/queue.h"
 #include "syntax/tokenNode.h"
 #include "utils/hashDriver.h"
+#include "utils/semanticCube.h"
 #include "flex/scanner.h"
 
 void* ParseAlloc(void* (*allocProc)(size_t));
@@ -18,6 +19,8 @@ int main(int argc, char** argv){
     fprintf(stderr, "Error: Cannot open file %s\n", argv[1]);
     return 1;
   }
+
+  initSemanticCube();
 
   ParserContext * ctx = (ParserContext*)malloc(sizeof(ParserContext));
   ctx->functionTable = NULL;

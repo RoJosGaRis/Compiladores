@@ -6,7 +6,7 @@ TYPES stringToType(const char* typeStr) {
     if (strcmp(typeStr, "float") == 0) return TYPE_FLOAT;
     if (strcmp(typeStr, "string") == 0) return TYPE_STRING;
     if (strcmp(typeStr, "bool") == 0) return TYPE_BOOL;
-    return TYPE_UNKNOWN;
+    return TYPE_ERROR;
 }
 
 const char* typeToString(TYPES type) {
