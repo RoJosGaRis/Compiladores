@@ -39,7 +39,12 @@ OPERATORS stringToOp(char* op) {
     if (strcmp(op, ">") == 0) return OP_GT;
     //  OP_LT,      // <
     if (strcmp(op, "<") == 0) return OP_LT;
-    //  OP_COUNT
+    //  OP_GOTO
+    if (strcmp(op, "GOTO") == 0) return OP_GOTO;
+    //  OP_GOTOF
+    if (strcmp(op, "GOTOF") == 0) return OP_GOTOF;
+    //  OP_GOTOT
+    if (strcmp(op, "GOTOT") == 0) return OP_GOTOT;
     return OP_ERROR;
 }
 

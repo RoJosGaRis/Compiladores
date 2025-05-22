@@ -16,7 +16,9 @@ void printContextVariables(ParserContext * ctx);
 int handleQuad(int id1, int id2, OPERATORS op, ParserContext * ctx);
 void handleOperation(char * op, ParserContext * ctx);
 void handleOperator(char * id1, ParserContext * ctx);
-void quadsSolve(ParserContext * ctx);
+int quadsSolve(ParserContext * ctx);
+void handleConditionStart(ParserContext * ctx);
+void handleConditionEnd(ParserContext * ctx);
 
 #endif
 

@@ -23,6 +23,9 @@ typedef enum {
     OP_MUL,     // 6
     OP_DIV,     // 7
     OP_ERROR,   // 8
+    OP_GOTO,    // 9
+    OP_GOTOF,   // 10
+    OP_GOTOT,   // 11
     OP_COUNT
 } OPERATORS;
 

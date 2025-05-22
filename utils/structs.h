@@ -12,6 +12,7 @@ typedef struct ParserContext{
   struct QuadList * quadList;
   Stack operations;
   Stack operators;
+  Stack goToAddresses;
   
   int*    INT_VARIABLES;
   int*    INT_CONSTANTS;

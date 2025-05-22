@@ -51,8 +51,9 @@ int handleQuad(int id1, int id2, OPERATORS op, ParserContext * ctx)
   return vAddress;
 }
 
-void quadsSolve(ParserContext * ctx)
+intquadsSolve(ParserContext * ctx)
 {
+  printf("Solving");
   while(!sIsEmpty(&ctx->operators) && !sIsEmpty(&ctx->operations))
   {
     int right = sPop(&ctx->operators);
@@ -60,6 +61,8 @@ void quadsSolve(ParserContext * ctx)
     // handleQuad(left,right,sPop(&ctx->operations),&ctx);
     sPush(&ctx->operators, handleQuad(left,right,sPop(&ctx->operations),ctx));
   }
+  // return sPop(&ctx->operators);
+  return 0;
 }
 
 void handleOperator(char * id1, ParserContext * ctx)
@@ -72,7 +75,7 @@ void handleOperator(char * id1, ParserContext * ctx)
 }
 
 void handleOperation(char * op, ParserContext * ctx){
-  // printf("Evaluating: %s and %d\n", op, sPeek(&ctx->operations));
+  printf("Evaluating: %s and %d\n", op, sPeek(&ctx->operations));
   while(!hasPriority(stringToOp(op), sPeek(&ctx->operations)))
   {
     int right = sPop(&ctx->operators);
@@ -81,4 +84,13 @@ void handleOperation(char * op, ParserContext * ctx){
     sPush(&ctx->operators, handleQuad(left,right,sPop(&ctx->operations),ctx));
   }
   sPush(&ctx->operations, stringToOp(op));
+}
+
+void handleConditionStart(ParserContext * ctx){
+  addQuad(stringToOp("GOTOF"), sPop(&ctx->operators), -1, -1,ctx);
+  sPush(&ctx->goToAddresses, ctx->quadList->count-1);
+}
+void handleConditionEnd(ParserContext * ctx){
+  int index = sPop(&ctx->goToAddresses);
+  ctx->quadList->quadruples[index].addRight = ctx->quadList->count;
 }

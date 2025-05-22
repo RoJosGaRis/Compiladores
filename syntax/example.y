@@ -95,11 +95,16 @@ statement ::= cycle .
 statement ::= f_call .
 statement ::= print .
 
-assign ::= TKN_ID(ID) TKN_ASSIGN expression(E) TKN_SEMI_COLON . 
-{
-  printf("%s = %s\n", ID, E);
+assign_start ::= TKN_ID(ID) TKN_ASSIGN(TA) . {
+  handleOperator(ID, ctx);
+  handleOperation(TA, ctx);
 }
-condition ::= TKN_IF TKN_LPAREN expression TKN_RPAREN body cond .
+assign ::= assign_start expression TKN_SEMI_COLON . 
+
+condition_start ::= TKN_RPAREN . {
+  handleConditionStart(ctx);
+}
+condition ::= TKN_IF TKN_LPAREN expression condition_start body cond .
 cycle ::= TKN_WHILE TKN_LPAREN expression TKN_RPAREN body .
 f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON .
 print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON .
@@ -110,24 +115,19 @@ print_prm ::= expression print_prm_prm .
 print_prm_prm ::= TKN_COMMA print_prm .
 print_prm_prm ::= .
 
-cond ::= .
+cond ::= . {
+  handleConditionEnd(ctx);
+}
 cond ::= TKN_ELSE body .
 
-expression(E) ::= exp (E).
+expression ::= exp.
 {
-  //printf("=======Expression END: %s=======\n", E);
   quadsSolve(ctx);
 }
-expression ::= exp expression_prm . 
-expression_prm ::= comp expression_end .
-expression_end ::= exp (E).
-{
-  //printf("=======Expression END: %s=======\n", E);
+expression ::= exp comp exp .  {
+  quadsSolve(ctx);
 }
-exp ::= termino(T) .
-{
-  //printf("=======Termino: %s=======\n", T);
-}
+exp ::= termino .
 exp_begin ::= termino sign(S) .
 {
   handleOperation(S, ctx);
@@ -136,7 +136,7 @@ exp ::= exp_begin exp .
 
 termino ::= factor(F) .
 {
-  //printf("=======Factor: %s=======\n", F);
+  printf("=======Factor: %s=======\n", F);
   handleOperator(F, ctx);
 }
 termino_begin ::= factor(F) oper(O) .
@@ -147,10 +147,7 @@ termino_begin ::= factor(F) oper(O) .
 }
 termino ::= termino_begin termino . 
 
-factor(F) ::= TKN_LPAREN expression(E) TKN_RPAREN . {
-  F = malloc(sizeof(char) * (strlen(E) +1));
-  sprintf(F, "%s", E);
-}
+factor ::= TKN_LPAREN expression TKN_RPAREN . 
 
 factor ::= sign factor_prm .
 factor ::= factor_prm .
@@ -172,8 +169,14 @@ oper ::= TKN_DIV .
 sign ::= TKN_PLUS .
 sign ::= TKN_MINUS .
 
-comp ::= TKN_LT .
-comp ::= TKN_GT .
-comp ::= TKN_NE .
+comp ::= TKN_LT(LT) . {
+  handleOperation(LT, ctx);
+}
+comp ::= TKN_GT(GT) . {
+  handleOperation(GT, ctx);
+}
+comp ::= TKN_NE(NE) . {
+  handleOperation(NE, ctx);
+}
 
 %nonassoc TKN_INT TKN_FLOAT TKN_PRINT TKN_IF TKN_ELSE TKN_WHILE TKN_DO TKN_INT_CONST TKN_FLOAT_CONST TKN_STRING_CONST
