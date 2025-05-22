@@ -1,29 +1,37 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <stdbool.h>
+
 typedef enum {
   TYPE_INT,
   TYPE_FLOAT,
+  TYPE_BOOL,
   TYPE_STRING,
   TYPE_VOID,
-  TYPE_BOOL,
   TYPE_ERROR,
   TYPE_COUNT,
 } TYPES;
 
 typedef enum {
-    OP_ADD,     // +
-    OP_SUB,     // -
-    OP_MUL,     // *
-    OP_DIV,     // /
-    OP_EQ,
-    OP_DEQ,     // ==
-    OP_GT,      // >
-    OP_LT,      // <
+    OP_GT,      // 0
+    OP_LT,      // 1
+    OP_DEQ,     // 2
+    OP_EQ,      // 3
+    OP_ADD,     // 4
+    OP_SUB,     // 5
+    OP_MUL,     // 6
+    OP_DIV,     // 7
+    OP_ERROR,   // 8
     OP_COUNT
 } OPERATORS;
 
+
+
 TYPES stringToType(const char* typeStr);
+OPERATORS stringToOp(char* op);
+const char* opToString(OPERATORS op);
 const char* typeToString(TYPES type);
+bool hasPriority(TYPES op1, TYPES op2); 
 
 #endif

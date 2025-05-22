@@ -1,11 +1,11 @@
 %type vars_prm_prm {StringList*}
 %type params {StringList*}
 
-%token_type {const char*}
+%token_type {char*}
 
 %include {
 #include "example.h"
-#include "../utils/hashDriver.h"
+#include "../utils/parserContext.h"
 #include <assert.h>
 }
 
@@ -22,6 +22,7 @@ program_id(ID) ::= TKN_ID(ID) . {
   addFunction(&ctx->functionTable, ID, "void");
   ctx->programFunction = findFunction(&ctx->functionTable, ID);
   ctx->currentFunction = NULL;
+  initContext(ctx);
   ID = strdup(ID);
   printf("Program name: %s\n", ID);
 }
@@ -60,9 +61,9 @@ functions ::= .
 function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end . 
 
 function_id ::= TKN_ID(TI) . {
-  printf("Adding function %s\n", TI);
   addFunction(&ctx->functionTable, TI, "void");
   ctx->currentFunction = findFunction(&ctx->functionTable, TI);
+  //printf("Current Function: %s\n",TI);
 }
 
 params(PARAMS) ::= TKN_ID(TI) TKN_COLON type(T). {
@@ -70,19 +71,17 @@ params(PARAMS) ::= TKN_ID(TI) TKN_COLON type(T). {
   PARAMS->id = strdup(TI);
   PARAMS->next = NULL;
   handleVariableList(PARAMS, ctx, T);
-  printf("Adding parameter %s of type %s\n", TI, T); 
 }
 params(PARAMS) ::= TKN_ID(TI) TKN_COLON type(T) TKN_COMMA params .{
   PARAMS = malloc(sizeof(StringList*));
   PARAMS->id = strdup(TI);
   PARAMS->next = NULL;
   handleVariableList(PARAMS, ctx, T);
-  printf("Adding parameter %s of type %s\n", TI, T); 
 }
 
 function_end ::= TKN_SEMI_COLON . {
-  printf("End of function\n");
   ctx->currentFunction = NULL;
+  //printf("Exiting function\n");
 }
 
 body ::= TKN_LBRACE statements TKN_RBRACE .
@@ -96,7 +95,10 @@ statement ::= cycle .
 statement ::= f_call .
 statement ::= print .
 
-assign ::= TKN_ID TKN_ASSIGN expression TKN_SEMI_COLON .
+assign ::= TKN_ID(ID) TKN_ASSIGN expression(E) TKN_SEMI_COLON . 
+{
+  printf("%s = %s\n", ID, E);
+}
 condition ::= TKN_IF TKN_LPAREN expression TKN_RPAREN body cond .
 cycle ::= TKN_WHILE TKN_LPAREN expression TKN_RPAREN body .
 f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON .
@@ -111,23 +113,48 @@ print_prm_prm ::= .
 cond ::= .
 cond ::= TKN_ELSE body .
 
-expression ::= exp expression_prm .
-expression_prm ::= comp exp .
-expression_prm ::= .
+expression(E) ::= exp (E).
+{
+  //printf("=======Expression END: %s=======\n", E);
+  quadsSolve(ctx);
+}
+expression ::= exp expression_prm . 
+expression_prm ::= comp expression_end .
+expression_end ::= exp (E).
+{
+  //printf("=======Expression END: %s=======\n", E);
+}
+exp ::= termino(T) .
+{
+  //printf("=======Termino: %s=======\n", T);
+}
+exp_begin ::= termino sign(S) .
+{
+  handleOperation(S, ctx);
+}
+exp ::= exp_begin exp .
 
-exp ::= termino exp_prm .
-exp_prm ::= sign exp .
-exp_prm ::= .
+termino ::= factor(F) .
+{
+  //printf("=======Factor: %s=======\n", F);
+  handleOperator(F, ctx);
+}
+termino_begin ::= factor(F) oper(O) .
+{
+  //printf("=======Factor: %s Oper: %s=======\n", F, O);
+  handleOperator(F, ctx);
+  handleOperation(O, ctx);
+}
+termino ::= termino_begin termino . 
 
-termino ::= factor termino_prm .
-termino_prm ::= oper termino .
-termino_prm ::= .
-
-factor ::= TKN_LPAREN expression TKN_RPAREN .
+factor(F) ::= TKN_LPAREN expression(E) TKN_RPAREN . {
+  F = malloc(sizeof(char) * (strlen(E) +1));
+  sprintf(F, "%s", E);
+}
 
 factor ::= sign factor_prm .
 factor ::= factor_prm .
-factor_prm ::= TKN_ID .
+factor_prm ::= TKN_ID . 
 factor_prm ::= cte .
 
 call ::= .

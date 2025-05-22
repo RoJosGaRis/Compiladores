@@ -4,8 +4,9 @@
 
 #include <stdbool.h>
 #include "tokenNode.h"
+#include "../consts.h"
 
-#define MAX_SIZE 10000
+// #define MAX_SIZE 10000
 
 // Definición de nodo de la cola
 struct QueueNode {
@@ -20,10 +21,10 @@ struct Queue {
 };
 
 // Declaraciones de funciones
-void initialize(struct Queue *queue);
-bool isEmpty(struct Queue *q);
-bool isFull(struct Queue *q);
-TokenNode* peek(struct Queue *q);
+void qInitialize(struct Queue *queue);
+bool qIsEmpty(struct Queue *q);
+bool qIsFull(struct Queue *q);
+TokenNode* qPeek(struct Queue *q);
 void enqueue(struct Queue *q, TokenNode *val);
 TokenNode* dequeue(struct Queue *q);
 

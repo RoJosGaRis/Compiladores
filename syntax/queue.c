@@ -2,23 +2,23 @@
 #include <stdlib.h>
 #include "queue.h"
 
-void initialize(struct Queue *queue){
+void qInitialize(struct Queue *queue){
   queue -> front = NULL;
   queue -> rear = NULL;
   queue -> count = 0;
 }
 
 // isEmpty
-bool isEmpty(struct Queue *q){
+bool qIsEmpty(struct Queue *q){
   return q->count == 0;
 }
 // isFull
-bool isFull(struct Queue *q){
-  return q->count == MAX_SIZE;
+bool qIsFull(struct Queue *q){
+  return q->count == MAX_QUEUE_SIZE;
 }
 // peek
-TokenNode* peek(struct Queue *q){
-  if(isEmpty(q))
+TokenNode* qPeek(struct Queue *q){
+  if(qIsEmpty(q))
   {
     printf("Queue vacía\n");
     return NULL;
@@ -28,7 +28,7 @@ TokenNode* peek(struct Queue *q){
 // enqueue
 void enqueue(struct Queue *q, TokenNode* val){
   // printf("ENQUEUE");
-  if(isFull(q)) {
+  if(qIsFull(q)) {
     printf("QUEUE: Queue llena\n");
     return;
   }
@@ -43,7 +43,7 @@ void enqueue(struct Queue *q, TokenNode* val){
   newNode->next = NULL;
   
   // printf("ENQUEUE3");
-  if(isEmpty(q)){
+  if(qIsEmpty(q)){
     q->front = newNode;
     q->rear = newNode;
   } else {
@@ -56,7 +56,7 @@ void enqueue(struct Queue *q, TokenNode* val){
 // dequeue
 TokenNode* dequeue(struct Queue *q){
   
-  if(isEmpty(q)){
+  if(qIsEmpty(q)){
     printf("Queue vacia\n");
     return NULL;
   }

@@ -27,6 +27,17 @@
     "xloctime": "cpp",
     "tables.h": "c",
     "stdio.h": "c",
-    "hashdriver.h": "c"
+    "hashdriver.h": "c",
+    "queue.h": "c",
+    "types.h": "c",
+    "parsercontext.h": "c",
+    "quads.h": "c",
+    "stack.h": "c",
+    "stdlib.h": "c",
+    "consts.h": "c",
+    "tokennode.h": "c",
+    "example.h": "c",
+    "string.h": "c",
+    "structs.h": "c"
   }
 }

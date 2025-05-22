@@ -1,4 +1,4 @@
-#include "types.h"
+#include "structs.h"
 
 typedef struct StringList {
   char *id;
@@ -14,6 +14,7 @@ typedef struct ParamList {
 typedef struct VariableEntry {
   char * name;
   TYPES type;
+  int VAddress;
   UT_hash_handle hh;
 } VariableEntry;
 
@@ -21,5 +22,6 @@ typedef struct FunctionEntry {
   char * name;
   TYPES type;
   struct VariableEntry *variableTable;
+
   UT_hash_handle hh;
 } FunctionEntry;

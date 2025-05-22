@@ -3,7 +3,7 @@
 #include "syntax/example.h"
 #include "syntax/queue.h"
 #include "syntax/tokenNode.h"
-#include "utils/hashDriver.h"
+#include "utils/parserContext.h"
 #include "utils/semanticCube.h"
 #include "flex/scanner.h"
 
@@ -25,13 +25,20 @@ int main(int argc, char** argv){
   ParserContext * ctx = (ParserContext*)malloc(sizeof(ParserContext));
   ctx->functionTable = NULL;
   ctx->currentFunction = NULL;
+  ctx->INT_VARIABLES_COUNT = 0;
+  ctx->INT_CONSTANTS_COUNT = 0;
+  ctx->INT_TEMPS_COUNT = 0;
+  ctx->FLOAT_VARIABLES_COUNT = 0;
+  ctx->FLOAT_CONSTANTS_COUNT = 0;
+  ctx->FLOAT_TEMPS_COUNT = 0;
+  ctx->STRING_CONSTANTS_COUNT = 0;
 
   yyscan_t scanner;
   yylex_init(&scanner);
   yyset_in(file, scanner);
   
   struct Queue q;
-  initialize(&q);
+  qInitialize(&q);
   
   void * parser = ParseAlloc(malloc);
   
@@ -46,7 +53,9 @@ int main(int argc, char** argv){
     Parse(parser, newToken->type, newToken->text, ctx);
   } while(lexCode > 0);
   printFunctionTable(ctx->functionTable);
-
+  printQuads(ctx);
+  // initMemoryMap(ctx);
+  // printContextVariables(ctx);
   // TokenNode* token;
   // while(!isEmpty(&q))
   // {
