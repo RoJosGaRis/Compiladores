@@ -24,11 +24,11 @@ program_id(ID) ::= TKN_ID(ID) . {
   ctx->currentFunction = NULL;
   initContext(ctx);
   ID = strdup(ID);
-  printf("Program name: %s\n", ID);
+  //printf("Program name: %s\n", ID);
 }
 
 program_end ::= TKN_END . {
-  printf("End of program\n");
+  //printf("End of program\n");
   ctx->programFunction = NULL;
   ctx->currentFunction = NULL;
 }
@@ -104,8 +104,19 @@ assign ::= assign_start expression TKN_SEMI_COLON .
 condition_start ::= TKN_RPAREN . {
   handleConditionStart(ctx);
 }
-condition ::= TKN_IF TKN_LPAREN expression condition_start body cond .
-cycle ::= TKN_WHILE TKN_LPAREN expression TKN_RPAREN body .
+condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON.
+
+cycle_condition_start ::= TKN_WHILE TKN_LPAREN . {
+  handleCycleConditionStart(ctx);
+}
+cycle_expression ::= expression . {
+  handleCycleStart(ctx);
+}
+cycle_end ::= TKN_SEMI_COLON . {
+  handleCycleEnd(ctx);
+}
+cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end.
+
 f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON .
 print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON .
 
@@ -118,7 +129,14 @@ print_prm_prm ::= .
 cond ::= . {
   handleConditionEnd(ctx);
 }
-cond ::= TKN_ELSE body .
+
+else_start ::= TKN_ELSE .
+{
+  handleConditionElseStart(ctx);
+}
+cond ::= else_start body . {
+  handleConditionElseEnd(ctx);
+}
 
 expression ::= exp.
 {
@@ -136,12 +154,10 @@ exp ::= exp_begin exp .
 
 termino ::= factor(F) .
 {
-  printf("=======Factor: %s=======\n", F);
   handleOperator(F, ctx);
 }
 termino_begin ::= factor(F) oper(O) .
 {
-  //printf("=======Factor: %s Oper: %s=======\n", F, O);
   handleOperator(F, ctx);
   handleOperation(O, ctx);
 }

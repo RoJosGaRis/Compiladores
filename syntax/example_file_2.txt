@@ -15,6 +15,12 @@ main
     variable = variable1 + variable2 * variable3 - variable4 / variable5;
     if(variable1 > variable2){
       variable = variable2;
+    } else {
+      variable = variable3;
+    };
+
+    while(variable1 < variable2 + variable3) {
+      variable1 = variable1;
     };
 }
 end
