@@ -4,9 +4,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
 // #include "types.h"
 #include "quads/quads.h"
 #include "hashDriver.h"
+#include "semanticCube.h"
 // #include "../consts.h"
 // #include "structs.h"
 

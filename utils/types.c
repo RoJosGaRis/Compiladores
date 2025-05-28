@@ -57,6 +57,29 @@ const char* typeToString(TYPES type) {
         default: return "unknown";
     }
 }
+
+TYPES vAddressToType(int vAddress) {
+    if (vAddress >= 1000 && vAddress < 3000) {
+        return TYPE_INT; // INT_VARIABLES_SEGMENT
+    } else if (vAddress >= 3000 && vAddress < 5000) {
+        return TYPE_INT; // INT_CONSTANTS_SEGMENT
+    } else if (vAddress >= 5000 && vAddress < 7000) {
+        return TYPE_INT; // INT_TEMPS_SEGMENT
+    } else if (vAddress >= 7000 && vAddress < 9000) {
+        return TYPE_FLOAT; // FLOAT_VARIABLES_SEGMENT
+    } else if (vAddress >= 9000 && vAddress < 11000) {
+        return TYPE_FLOAT; // FLOAT_CONSTANTS_SEGMENT
+    } else if (vAddress >= 11000 && vAddress < 13000) {
+        return TYPE_FLOAT; // FLOAT_TEMPS_SEGMENT
+    } else if (vAddress >= 13000 && vAddress < 15000) {
+        return TYPE_STRING; // STRING_CONSTANTS_SEGMENT
+    } else if (vAddress >= 15000 && vAddress < 17000) {
+        return TYPE_STRING; // STRING_TEMPS_SEGMENT
+    } else {
+        return TYPE_ERROR;
+    }
+}
+
 const char* opToString(OPERATORS op)
 {
     switch(op){

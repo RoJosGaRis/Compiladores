@@ -35,6 +35,7 @@ TYPES stringToType(const char* typeStr);
 OPERATORS stringToOp(char* op);
 const char* opToString(OPERATORS op);
 const char* typeToString(TYPES type);
+TYPES vAddressToType(int vAddress);
 bool hasPriority(TYPES op1, TYPES op2); 
 
 #endif

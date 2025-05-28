@@ -43,12 +43,19 @@ void printContextVariables(ParserContext * ctx)
 
 int handleQuad(int id1, int id2, OPERATORS op, ParserContext * ctx)
 {
+  if (getResultingType(vAddressToType(id1), op, vAddressToType(id2)) == TYPE_ERROR) {
+    printf("\n%d %d %d\n", id1, op, id2);
+    fprintf(stderr, "ERROR de Tipos, no se puede ejecutar la operación\n");
+    exit(EXIT_FAILURE);  // Detiene el programa con código de error
+  }
   // OPERATORS oper = stringToOp(op);
   int vAddress = (int)ctx->INT_TEMPS_COUNT + INT_TEMPS_SEGMENT;
   //printf("\n%d\t%d\t%d\t%d\n", op, id1, id2, vAddress);
   if(op == OP_EQ) addQuad(op, -1, id2, id1, ctx);
-  else addQuad(op, id1, id2, vAddress, ctx);
-  ctx->INT_TEMPS_COUNT++;
+  else {
+    addQuad(op, id1, id2, vAddress, ctx);
+    ctx->INT_TEMPS_COUNT++;
+  } 
   return vAddress;
 }
 
