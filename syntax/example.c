@@ -24,7 +24,7 @@
 */
 #include <stdio.h>
 /************ Begin %include sections from the grammar ************************/
-#line 6 "syntax/example.y"
+#line 8 "syntax/example.y"
 
 #include "example.h"
 #include "../utils/parserContext.h"
@@ -93,13 +93,15 @@
 #endif
 /************* Begin control #defines *****************************************/
 #define YYCODETYPE unsigned char
-#define YYNOCODE 76
+#define YYNOCODE 77
 #define YYACTIONTYPE unsigned short int
 #define ParseTOKENTYPE char*
 typedef union {
   int yyinit;
   ParseTOKENTYPE yy0;
-  StringList* yy50;
+  StringList* yy38;
+  float yy123;
+  int yy130;
 } YYMINORTYPE;
 #ifndef YYSTACKDEPTH
 #define YYSTACKDEPTH 100
@@ -115,16 +117,16 @@ typedef union {
 #define ParseCTX_FETCH
 #define ParseCTX_STORE
 #define YYNSTATE             69
-#define YYNRULE              69
+#define YYNRULE              70
 #define YYNTOKEN             34
 #define YY_MAX_SHIFT         68
-#define YY_MIN_SHIFTREDUCE   124
-#define YY_MAX_SHIFTREDUCE   192
-#define YY_ERROR_ACTION      193
-#define YY_ACCEPT_ACTION     194
-#define YY_NO_ACTION         195
-#define YY_MIN_REDUCE        196
-#define YY_MAX_REDUCE        264
+#define YY_MIN_SHIFTREDUCE   125
+#define YY_MAX_SHIFTREDUCE   194
+#define YY_ERROR_ACTION      195
+#define YY_ACCEPT_ACTION     196
+#define YY_NO_ACTION         197
+#define YY_MIN_REDUCE        198
+#define YY_MAX_REDUCE        267
 /************* End control #defines *******************************************/
 
 /* Define the yytestcase() macro to be a no-op if is not already defined
@@ -190,91 +192,93 @@ typedef union {
 **  yy_default[]       Default action for each state.
 **
 *********** Begin parsing tables **********************************************/
-#define YY_ACTTAB_COUNT (227)
+#define YY_ACTTAB_COUNT (237)
 static const YYACTIONTYPE yy_action[] = {
- /*     0 */    32,   43,  249,   50,   14,   23,   13,  245,   23,   23,
- /*    10 */    20,  199,   24,   11,   14,   23,   13,   32,   23,   23,
- /*    20 */   181,  251,  251,  227,   55,  194,   48,   20,   17,   24,
- /*    30 */    11,   14,   23,   13,  209,   23,   23,   67,   57,   31,
- /*    40 */   187,  188,   17,  140,   20,   39,   24,   11,   14,   23,
- /*    50 */    13,  257,   23,   23,   12,   20,   39,   24,   11,   14,
- /*    60 */    23,   13,   64,   23,   23,   44,   20,   45,   24,   11,
- /*    70 */    14,   23,   13,   38,   23,   23,   50,  147,  148,  149,
- /*    80 */    60,   58,   56,   20,  223,   24,   11,   14,   23,   13,
- /*    90 */    61,   23,   23,    5,  153,  154,  189,  190,   49,  134,
- /*   100 */    20,   62,   24,   11,   14,   23,   13,   46,   23,   23,
- /*   110 */   218,   20,  216,   24,   11,   14,   23,   13,  204,   23,
- /*   120 */    23,  231,    9,    9,    9,    9,    9,    9,    7,  133,
- /*   130 */   191,  192,    3,   65,    9,    9,    9,    9,    9,    9,
- /*   140 */     7,  229,   10,  201,    3,   47,   16,   52,   27,  248,
- /*   150 */   130,   24,   11,   14,   23,   13,   53,   23,   23,  181,
- /*   160 */     1,  244,  243,  138,  240,   34,  215,    8,   24,   11,
- /*   170 */    14,   23,   13,  181,   23,   23,  213,   33,   59,  187,
- /*   180 */   188,    8,   18,  191,  192,   36,  135,   37,    4,  256,
- /*   190 */   125,   66,   19,  187,  188,  124,   40,  191,  192,   68,
- /*   200 */    25,   21,   26,   28,   15,   22,  170,   29,  167,   51,
- /*   210 */    54,   30,    2,  166,   35,  136,  169,    6,  222,   41,
- /*   220 */   178,   63,   42,  195,  195,  195,  158,
+ /*     0 */    23,   23,  236,   11,   11,   11,   11,   11,   11,    7,
+ /*    10 */    44,  232,   43,    3,   50,   67,   17,   23,   23,   48,
+ /*    20 */    17,   32,  148,  196,  201,   60,   58,   56,  250,   23,
+ /*    30 */    23,   20,   31,   24,    9,   14,   23,   13,   32,   23,
+ /*    40 */   157,  158,  149,  150,   10,   55,   45,  141,   20,    5,
+ /*    50 */    24,    9,   14,   23,   13,  135,   23,   50,   23,   23,
+ /*    60 */   253,  148,   24,    9,   14,   23,   13,  228,   23,    8,
+ /*    70 */   151,  152,  153,   59,   49,   23,   23,  193,  194,  211,
+ /*    80 */    36,  149,  150,   57,  220,  193,  194,   23,   23,   20,
+ /*    90 */   218,   24,    9,   14,   23,   13,   39,   23,  191,  192,
+ /*   100 */    46,  206,  262,   23,   23,   12,   20,  148,   24,    9,
+ /*   110 */    14,   23,   13,  134,   23,    8,   23,   23,  217,  234,
+ /*   120 */    24,    9,   14,   23,   13,   33,   23,  149,  150,   47,
+ /*   130 */    16,  193,  194,   23,   23,  203,  254,   39,   14,   23,
+ /*   140 */    13,   52,   23,   64,   27,  256,  256,   20,  131,   24,
+ /*   150 */     9,   14,   23,   13,   38,   23,    1,   53,  249,  248,
+ /*   160 */   139,  245,   34,  215,   20,   18,   24,    9,   14,   23,
+ /*   170 */    13,   37,   23,  136,   23,   23,   65,   11,   11,   11,
+ /*   180 */    11,   11,   11,    7,  256,    4,  126,    3,  261,   66,
+ /*   190 */    19,   23,   23,   40,  125,   61,   68,   25,   21,   26,
+ /*   200 */    28,   15,   22,  174,  171,   20,   51,   24,    9,   14,
+ /*   210 */    23,   13,   62,   23,   29,   30,  170,   54,    2,  173,
+ /*   220 */    35,  137,   20,    6,   24,    9,   14,   23,   13,  182,
+ /*   230 */    23,   63,  162,  227,   41,  197,   42,
 };
 static const YYCODETYPE yy_lookahead[] = {
- /*     0 */    55,    1,   67,   34,   69,   70,   71,   62,   73,   74,
- /*    10 */    65,   42,   67,   68,   69,   70,   71,   55,   73,   74,
- /*    20 */     4,   73,   74,   39,   62,   36,    4,   65,   44,   67,
- /*    30 */    68,   69,   70,   71,   55,   73,   74,   39,   59,   11,
- /*    40 */    24,   25,   44,   23,   65,   55,   67,   68,   69,   70,
- /*    50 */    71,   61,   73,   74,   66,   65,   55,   67,   68,   69,
- /*    60 */    70,   71,   61,   73,   74,    4,   65,   43,   67,   68,
- /*    70 */    69,   70,   71,   55,   73,   74,   34,   30,   31,   32,
- /*    80 */    19,   20,   21,   65,   42,   67,   68,   69,   70,   71,
- /*    90 */    55,   73,   74,   12,    9,   10,   26,   27,   43,   18,
- /*   100 */    65,   55,   67,   68,   69,   70,   71,    4,   73,   74,
- /*   110 */    72,   65,   69,   67,   68,   69,   70,   71,   35,   73,
- /*   120 */    74,   47,   48,   49,   50,   51,   52,   53,   54,    2,
- /*   130 */    28,   29,   58,   47,   48,   49,   50,   51,   52,   53,
- /*   140 */    54,   46,   16,   34,   58,   40,    6,   35,   38,   65,
- /*   150 */     4,   67,   68,   69,   70,   71,   45,   73,   74,    4,
- /*   160 */     8,   63,   63,    2,   60,   40,   65,   12,   67,   68,
- /*   170 */    69,   70,   71,    4,   73,   74,   40,   22,   57,   24,
- /*   180 */    25,   12,   40,   28,   29,   64,   13,   56,    8,   75,
- /*   190 */     5,   41,   38,   24,   25,    4,   40,   28,   29,   37,
- /*   200 */     8,    7,   15,    8,    2,    7,    2,   14,    2,   13,
- /*   210 */    13,   12,   12,    2,   13,   12,    2,   12,    0,    3,
- /*   220 */    13,   13,    2,   76,   76,   76,   17,   76,   76,   76,
- /*   230 */    76,   76,   76,   76,   76,   76,   76,   76,   76,   76,
- /*   240 */    76,   76,   76,   76,   76,   76,   76,   76,   76,   76,
- /*   250 */    76,   76,   76,   76,   76,   76,   76,   76,   76,   76,
- /*   260 */    76,
+ /*     0 */    36,   37,   49,   50,   51,   52,   53,   54,   55,   56,
+ /*    10 */     4,   41,    1,   60,   34,   41,   46,   36,   37,    4,
+ /*    20 */    46,   57,    4,   38,   44,   19,   20,   21,   64,   36,
+ /*    30 */    37,   67,   11,   69,   70,   71,   72,   73,   57,   75,
+ /*    40 */     9,   10,   24,   25,   68,   64,   45,   23,   67,   12,
+ /*    50 */    69,   70,   71,   72,   73,   18,   75,   34,   36,   37,
+ /*    60 */    67,    4,   69,   70,   71,   72,   73,   44,   75,   12,
+ /*    70 */    30,   31,   32,   59,   45,   36,   37,   28,   29,   57,
+ /*    80 */    66,   24,   25,   61,   74,   28,   29,   36,   37,   67,
+ /*    90 */    71,   69,   70,   71,   72,   73,   57,   75,   26,   27,
+ /*   100 */     4,   35,   63,   36,   37,   16,   67,    4,   69,   70,
+ /*   110 */    71,   72,   73,    2,   75,   12,   36,   37,   67,   48,
+ /*   120 */    69,   70,   71,   72,   73,   22,   75,   24,   25,   42,
+ /*   130 */     6,   28,   29,   36,   37,   34,   69,   57,   71,   72,
+ /*   140 */    73,   35,   75,   63,   40,   36,   37,   67,    4,   69,
+ /*   150 */    70,   71,   72,   73,   57,   75,    8,   47,   65,   65,
+ /*   160 */     2,   62,   42,   42,   67,   42,   69,   70,   71,   72,
+ /*   170 */    73,   58,   75,   13,   36,   37,   49,   50,   51,   52,
+ /*   180 */    53,   54,   55,   56,   75,    8,    5,   60,   76,   43,
+ /*   190 */    40,   36,   37,   42,    4,   57,   39,    8,    7,   15,
+ /*   200 */     8,    2,    7,    2,    2,   67,   13,   69,   70,   71,
+ /*   210 */    72,   73,   57,   75,   14,   12,    2,   13,   12,    2,
+ /*   220 */    13,   12,   67,   12,   69,   70,   71,   72,   73,   13,
+ /*   230 */    75,   13,   17,    0,    3,   77,    2,   77,   77,   77,
+ /*   240 */    77,   77,   77,   77,   77,   77,   77,   77,   77,   77,
+ /*   250 */    77,   77,   77,   77,   77,   77,   77,   77,   77,   77,
+ /*   260 */    77,   77,   77,   77,   77,   77,   77,   77,   77,   77,
+ /*   270 */    77,
 };
 #define YY_SHIFT_COUNT    (68)
 #define YY_SHIFT_MIN      (0)
-#define YY_SHIFT_MAX      (220)
+#define YY_SHIFT_MAX      (234)
 static const unsigned short int yy_shift_ofst[] = {
- /*     0 */     0,  155,  155,  169,  169,  169,  169,  169,  169,   61,
- /*    10 */    61,  169,  169,  169,   16,   22,   22,   28,   20,   28,
- /*    20 */    47,   85,   85,   70,  102,  103,  127,  126,   22,  140,
- /*    30 */   103,  146,  152,  152,  161,  126,  126,  126,  173,  180,
- /*    40 */   185,  126,  140,  191,   81,  192,  194,  187,  195,  202,
- /*    50 */   198,  193,  196,  199,  204,  197,  200,  201,  203,  206,
- /*    60 */   205,  211,  207,  214,  208,  209,  218,  216,  220,
+ /*     0 */    11,  103,  103,   57,   57,   57,   57,   57,   57,   57,
+ /*    10 */    57,    6,    6,   57,   18,   15,   15,   21,   24,   21,
+ /*    20 */    40,   31,   31,   72,   49,   96,  111,   89,   15,  124,
+ /*    30 */    96,  144,  148,  148,  158,   89,   89,   89,  160,  177,
+ /*    40 */   181,   89,  124,  190,   37,  189,  191,  184,  192,  199,
+ /*    50 */   195,  200,  193,  203,  201,  204,  206,  207,  209,  202,
+ /*    60 */   211,  214,  216,  217,  218,  215,  233,  231,  234,
 };
 #define YY_REDUCE_COUNT (43)
-#define YY_REDUCE_MIN   (-65)
-#define YY_REDUCE_MAX   (162)
+#define YY_REDUCE_MIN   (-47)
+#define YY_REDUCE_MAX   (157)
 static const short yy_reduce_ofst[] = {
- /*     0 */   -11,  -55,  -38,  -21,  -10,    1,   18,   35,   46,   74,
- /*    10 */    86,   84,  101,  -65,  -52,  -31,   42,  -16,  121,   -2,
- /*    20 */   -12,   24,   55,   38,   43,   83,   95,  105,  109,  110,
- /*    30 */   112,  111,   98,   99,  104,  125,  136,  142,  131,  114,
- /*    40 */   150,  156,  154,  162,
+ /*     0 */   -15,  -36,  -19,   22,   39,   80,   97,  138,  155,   -7,
+ /*    10 */    51,  -47,  127,   67,  109,  -20,   23,  -30,   14,  -26,
+ /*    20 */   -24,    1,   29,   10,   19,   66,   71,   87,  101,  104,
+ /*    30 */   106,  110,   93,   94,   99,  120,  121,  123,  113,  112,
+ /*    40 */   146,  151,  150,  157,
 };
 static const YYACTIONTYPE yy_default[] = {
- /*     0 */   193,  193,  193,  193,  255,  255,  193,  193,  193,  232,
- /*    10 */   232,  193,  193,  193,  193,  198,  193,  228,  211,  228,
- /*    20 */   214,  193,  193,  217,  247,  193,  193,  193,  193,  224,
- /*    30 */   193,  193,  246,  246,  193,  193,  193,  193,  193,  258,
- /*    40 */   193,  193,  224,  193,  193,  203,  193,  193,  200,  193,
- /*    50 */   193,  193,  193,  193,  193,  193,  193,  193,  193,  193,
- /*    60 */   193,  193,  193,  193,  193,  193,  193,  193,  193,
+ /*     0 */   195,  195,  195,  195,  260,  260,  195,  195,  195,  195,
+ /*    10 */   195,  237,  237,  195,  195,  200,  195,  233,  213,  233,
+ /*    20 */   216,  195,  195,  219,  252,  195,  195,  195,  195,  229,
+ /*    30 */   195,  195,  251,  251,  195,  195,  195,  195,  195,  263,
+ /*    40 */   195,  195,  229,  195,  195,  205,  195,  195,  202,  195,
+ /*    50 */   195,  195,  195,  195,  195,  195,  195,  195,  195,  195,
+ /*    60 */   195,  195,  195,  195,  195,  195,  195,  195,  195,
 };
 /********** End of lemon-generated parsing tables *****************************/
 
@@ -417,46 +421,47 @@ static const char *const yyTokenName[] = {
   /*   33 */ "TKN_DO",
   /*   34 */ "vars_prm_prm",
   /*   35 */ "params",
-  /*   36 */ "program",
-  /*   37 */ "program_id",
-  /*   38 */ "vars",
-  /*   39 */ "functions",
-  /*   40 */ "body",
-  /*   41 */ "program_end",
-  /*   42 */ "vars_prm",
-  /*   43 */ "type",
-  /*   44 */ "function",
-  /*   45 */ "function_id",
-  /*   46 */ "function_end",
-  /*   47 */ "statements",
-  /*   48 */ "statement",
-  /*   49 */ "assign",
-  /*   50 */ "condition",
-  /*   51 */ "cycle",
-  /*   52 */ "f_call",
-  /*   53 */ "print",
-  /*   54 */ "assign_start",
-  /*   55 */ "expression",
-  /*   56 */ "condition_start",
-  /*   57 */ "cond",
-  /*   58 */ "cycle_condition_start",
-  /*   59 */ "cycle_expression",
-  /*   60 */ "cycle_end",
-  /*   61 */ "call",
-  /*   62 */ "print_prm",
-  /*   63 */ "print_prm_prm",
-  /*   64 */ "else_start",
-  /*   65 */ "exp",
-  /*   66 */ "comp",
-  /*   67 */ "termino",
-  /*   68 */ "exp_begin",
-  /*   69 */ "sign",
-  /*   70 */ "factor",
-  /*   71 */ "termino_begin",
-  /*   72 */ "oper",
-  /*   73 */ "factor_prm",
-  /*   74 */ "cte",
-  /*   75 */ "call_prm",
+  /*   36 */ "cte_float",
+  /*   37 */ "cte_int",
+  /*   38 */ "program",
+  /*   39 */ "program_id",
+  /*   40 */ "vars",
+  /*   41 */ "functions",
+  /*   42 */ "body",
+  /*   43 */ "program_end",
+  /*   44 */ "vars_prm",
+  /*   45 */ "type",
+  /*   46 */ "function",
+  /*   47 */ "function_id",
+  /*   48 */ "function_end",
+  /*   49 */ "statements",
+  /*   50 */ "statement",
+  /*   51 */ "assign",
+  /*   52 */ "condition",
+  /*   53 */ "cycle",
+  /*   54 */ "f_call",
+  /*   55 */ "print",
+  /*   56 */ "assign_start",
+  /*   57 */ "expression",
+  /*   58 */ "condition_start",
+  /*   59 */ "cond",
+  /*   60 */ "cycle_condition_start",
+  /*   61 */ "cycle_expression",
+  /*   62 */ "cycle_end",
+  /*   63 */ "call",
+  /*   64 */ "print_prm",
+  /*   65 */ "print_prm_prm",
+  /*   66 */ "else_start",
+  /*   67 */ "exp",
+  /*   68 */ "comp",
+  /*   69 */ "termino",
+  /*   70 */ "exp_begin",
+  /*   71 */ "sign",
+  /*   72 */ "factor",
+  /*   73 */ "termino_begin",
+  /*   74 */ "oper",
+  /*   75 */ "factor_prm",
+  /*   76 */ "call_prm",
 };
 #endif /* defined(YYCOVERAGE) || !defined(NDEBUG) */
 
@@ -487,52 +492,53 @@ static const char *const yyRuleName[] = {
  /*  20 */ "exp_begin ::= termino sign",
  /*  21 */ "termino ::= factor",
  /*  22 */ "termino_begin ::= factor oper",
- /*  23 */ "comp ::= TKN_LT",
- /*  24 */ "comp ::= TKN_GT",
- /*  25 */ "comp ::= TKN_NE",
- /*  26 */ "program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end",
- /*  27 */ "vars ::= TKN_VAR vars_prm",
- /*  28 */ "vars ::=",
- /*  29 */ "type ::= TKN_INT",
- /*  30 */ "type ::= TKN_FLOAT",
- /*  31 */ "functions ::= function functions",
- /*  32 */ "functions ::=",
- /*  33 */ "function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end",
- /*  34 */ "body ::= TKN_LBRACE statements TKN_RBRACE",
- /*  35 */ "statements ::= statement statements",
- /*  36 */ "statements ::=",
- /*  37 */ "statement ::= assign",
- /*  38 */ "statement ::= condition",
- /*  39 */ "statement ::= cycle",
- /*  40 */ "statement ::= f_call",
- /*  41 */ "statement ::= print",
- /*  42 */ "assign ::= assign_start expression TKN_SEMI_COLON",
- /*  43 */ "condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON",
- /*  44 */ "cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end",
- /*  45 */ "f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON",
- /*  46 */ "print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON",
- /*  47 */ "print_prm ::= TKN_STRING_CONST print_prm_prm",
- /*  48 */ "print_prm ::= expression print_prm_prm",
- /*  49 */ "print_prm_prm ::= TKN_COMMA print_prm",
- /*  50 */ "print_prm_prm ::=",
- /*  51 */ "exp ::= termino",
- /*  52 */ "exp ::= exp_begin exp",
- /*  53 */ "termino ::= termino_begin termino",
- /*  54 */ "factor ::= TKN_LPAREN expression TKN_RPAREN",
- /*  55 */ "factor ::= sign factor_prm",
- /*  56 */ "factor ::= factor_prm",
- /*  57 */ "factor_prm ::= TKN_ID",
- /*  58 */ "factor_prm ::= cte",
- /*  59 */ "call ::=",
- /*  60 */ "call ::= expression call_prm",
- /*  61 */ "call_prm ::= TKN_COMMA call",
- /*  62 */ "call_prm ::=",
- /*  63 */ "cte ::= TKN_INT_CONST",
- /*  64 */ "cte ::= TKN_FLOAT_CONST",
- /*  65 */ "oper ::= TKN_MULT",
- /*  66 */ "oper ::= TKN_DIV",
- /*  67 */ "sign ::= TKN_PLUS",
- /*  68 */ "sign ::= TKN_MINUS",
+ /*  23 */ "factor_prm ::= TKN_ID",
+ /*  24 */ "cte_int ::= TKN_INT_CONST",
+ /*  25 */ "cte_float ::= TKN_FLOAT_CONST",
+ /*  26 */ "comp ::= TKN_LT",
+ /*  27 */ "comp ::= TKN_GT",
+ /*  28 */ "comp ::= TKN_NE",
+ /*  29 */ "program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end",
+ /*  30 */ "vars ::= TKN_VAR vars_prm",
+ /*  31 */ "vars ::=",
+ /*  32 */ "type ::= TKN_INT",
+ /*  33 */ "type ::= TKN_FLOAT",
+ /*  34 */ "functions ::= function functions",
+ /*  35 */ "functions ::=",
+ /*  36 */ "function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end",
+ /*  37 */ "body ::= TKN_LBRACE statements TKN_RBRACE",
+ /*  38 */ "statements ::= statement statements",
+ /*  39 */ "statements ::=",
+ /*  40 */ "statement ::= assign",
+ /*  41 */ "statement ::= condition",
+ /*  42 */ "statement ::= cycle",
+ /*  43 */ "statement ::= f_call",
+ /*  44 */ "statement ::= print",
+ /*  45 */ "assign ::= assign_start expression TKN_SEMI_COLON",
+ /*  46 */ "condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON",
+ /*  47 */ "cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end",
+ /*  48 */ "f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON",
+ /*  49 */ "print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON",
+ /*  50 */ "print_prm ::= TKN_STRING_CONST print_prm_prm",
+ /*  51 */ "print_prm ::= expression print_prm_prm",
+ /*  52 */ "print_prm_prm ::= TKN_COMMA print_prm",
+ /*  53 */ "print_prm_prm ::=",
+ /*  54 */ "exp ::= termino",
+ /*  55 */ "exp ::= exp_begin exp",
+ /*  56 */ "termino ::= termino_begin termino",
+ /*  57 */ "factor ::= TKN_LPAREN expression TKN_RPAREN",
+ /*  58 */ "factor ::= sign factor_prm",
+ /*  59 */ "factor ::= factor_prm",
+ /*  60 */ "factor_prm ::= cte_int",
+ /*  61 */ "factor_prm ::= cte_float",
+ /*  62 */ "call ::=",
+ /*  63 */ "call ::= expression call_prm",
+ /*  64 */ "call_prm ::= TKN_COMMA call",
+ /*  65 */ "call_prm ::=",
+ /*  66 */ "oper ::= TKN_MULT",
+ /*  67 */ "oper ::= TKN_DIV",
+ /*  68 */ "sign ::= TKN_PLUS",
+ /*  69 */ "sign ::= TKN_MINUS",
 };
 #endif /* NDEBUG */
 
@@ -951,75 +957,76 @@ static const struct {
   YYCODETYPE lhs;       /* Symbol on the left-hand side of the rule */
   signed char nrhs;     /* Negative of the number of RHS symbols in the rule */
 } yyRuleInfo[] = {
-  {   37,   -1 }, /* (0) program_id ::= TKN_ID */
-  {   41,   -1 }, /* (1) program_end ::= TKN_END */
-  {   42,   -4 }, /* (2) vars_prm ::= vars_prm_prm TKN_COLON type TKN_SEMI_COLON */
-  {   42,   -5 }, /* (3) vars_prm ::= vars_prm_prm TKN_COLON type TKN_SEMI_COLON vars_prm */
+  {   39,   -1 }, /* (0) program_id ::= TKN_ID */
+  {   43,   -1 }, /* (1) program_end ::= TKN_END */
+  {   44,   -4 }, /* (2) vars_prm ::= vars_prm_prm TKN_COLON type TKN_SEMI_COLON */
+  {   44,   -5 }, /* (3) vars_prm ::= vars_prm_prm TKN_COLON type TKN_SEMI_COLON vars_prm */
   {   34,   -1 }, /* (4) vars_prm_prm ::= TKN_ID */
   {   34,   -3 }, /* (5) vars_prm_prm ::= TKN_ID TKN_COMMA vars_prm_prm */
-  {   45,   -1 }, /* (6) function_id ::= TKN_ID */
+  {   47,   -1 }, /* (6) function_id ::= TKN_ID */
   {   35,   -3 }, /* (7) params ::= TKN_ID TKN_COLON type */
   {   35,   -5 }, /* (8) params ::= TKN_ID TKN_COLON type TKN_COMMA params */
-  {   46,   -1 }, /* (9) function_end ::= TKN_SEMI_COLON */
-  {   54,   -2 }, /* (10) assign_start ::= TKN_ID TKN_ASSIGN */
-  {   56,   -1 }, /* (11) condition_start ::= TKN_RPAREN */
-  {   58,   -2 }, /* (12) cycle_condition_start ::= TKN_WHILE TKN_LPAREN */
-  {   59,   -1 }, /* (13) cycle_expression ::= expression */
-  {   60,   -1 }, /* (14) cycle_end ::= TKN_SEMI_COLON */
-  {   57,    0 }, /* (15) cond ::= */
-  {   64,   -1 }, /* (16) else_start ::= TKN_ELSE */
-  {   57,   -2 }, /* (17) cond ::= else_start body */
-  {   55,   -1 }, /* (18) expression ::= exp */
-  {   55,   -3 }, /* (19) expression ::= exp comp exp */
-  {   68,   -2 }, /* (20) exp_begin ::= termino sign */
-  {   67,   -1 }, /* (21) termino ::= factor */
-  {   71,   -2 }, /* (22) termino_begin ::= factor oper */
-  {   66,   -1 }, /* (23) comp ::= TKN_LT */
-  {   66,   -1 }, /* (24) comp ::= TKN_GT */
-  {   66,   -1 }, /* (25) comp ::= TKN_NE */
-  {   36,   -8 }, /* (26) program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end */
-  {   38,   -2 }, /* (27) vars ::= TKN_VAR vars_prm */
-  {   38,    0 }, /* (28) vars ::= */
-  {   43,   -1 }, /* (29) type ::= TKN_INT */
-  {   43,   -1 }, /* (30) type ::= TKN_FLOAT */
-  {   39,   -2 }, /* (31) functions ::= function functions */
-  {   39,    0 }, /* (32) functions ::= */
-  {   44,  -10 }, /* (33) function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end */
-  {   40,   -3 }, /* (34) body ::= TKN_LBRACE statements TKN_RBRACE */
-  {   47,   -2 }, /* (35) statements ::= statement statements */
-  {   47,    0 }, /* (36) statements ::= */
-  {   48,   -1 }, /* (37) statement ::= assign */
-  {   48,   -1 }, /* (38) statement ::= condition */
-  {   48,   -1 }, /* (39) statement ::= cycle */
-  {   48,   -1 }, /* (40) statement ::= f_call */
-  {   48,   -1 }, /* (41) statement ::= print */
-  {   49,   -3 }, /* (42) assign ::= assign_start expression TKN_SEMI_COLON */
-  {   50,   -7 }, /* (43) condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON */
-  {   51,   -5 }, /* (44) cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end */
-  {   52,   -5 }, /* (45) f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON */
-  {   53,   -5 }, /* (46) print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON */
-  {   62,   -2 }, /* (47) print_prm ::= TKN_STRING_CONST print_prm_prm */
-  {   62,   -2 }, /* (48) print_prm ::= expression print_prm_prm */
-  {   63,   -2 }, /* (49) print_prm_prm ::= TKN_COMMA print_prm */
-  {   63,    0 }, /* (50) print_prm_prm ::= */
-  {   65,   -1 }, /* (51) exp ::= termino */
-  {   65,   -2 }, /* (52) exp ::= exp_begin exp */
-  {   67,   -2 }, /* (53) termino ::= termino_begin termino */
-  {   70,   -3 }, /* (54) factor ::= TKN_LPAREN expression TKN_RPAREN */
-  {   70,   -2 }, /* (55) factor ::= sign factor_prm */
-  {   70,   -1 }, /* (56) factor ::= factor_prm */
-  {   73,   -1 }, /* (57) factor_prm ::= TKN_ID */
-  {   73,   -1 }, /* (58) factor_prm ::= cte */
-  {   61,    0 }, /* (59) call ::= */
-  {   61,   -2 }, /* (60) call ::= expression call_prm */
-  {   75,   -2 }, /* (61) call_prm ::= TKN_COMMA call */
-  {   75,    0 }, /* (62) call_prm ::= */
-  {   74,   -1 }, /* (63) cte ::= TKN_INT_CONST */
-  {   74,   -1 }, /* (64) cte ::= TKN_FLOAT_CONST */
-  {   72,   -1 }, /* (65) oper ::= TKN_MULT */
-  {   72,   -1 }, /* (66) oper ::= TKN_DIV */
-  {   69,   -1 }, /* (67) sign ::= TKN_PLUS */
-  {   69,   -1 }, /* (68) sign ::= TKN_MINUS */
+  {   48,   -1 }, /* (9) function_end ::= TKN_SEMI_COLON */
+  {   56,   -2 }, /* (10) assign_start ::= TKN_ID TKN_ASSIGN */
+  {   58,   -1 }, /* (11) condition_start ::= TKN_RPAREN */
+  {   60,   -2 }, /* (12) cycle_condition_start ::= TKN_WHILE TKN_LPAREN */
+  {   61,   -1 }, /* (13) cycle_expression ::= expression */
+  {   62,   -1 }, /* (14) cycle_end ::= TKN_SEMI_COLON */
+  {   59,    0 }, /* (15) cond ::= */
+  {   66,   -1 }, /* (16) else_start ::= TKN_ELSE */
+  {   59,   -2 }, /* (17) cond ::= else_start body */
+  {   57,   -1 }, /* (18) expression ::= exp */
+  {   57,   -3 }, /* (19) expression ::= exp comp exp */
+  {   70,   -2 }, /* (20) exp_begin ::= termino sign */
+  {   69,   -1 }, /* (21) termino ::= factor */
+  {   73,   -2 }, /* (22) termino_begin ::= factor oper */
+  {   75,   -1 }, /* (23) factor_prm ::= TKN_ID */
+  {   37,   -1 }, /* (24) cte_int ::= TKN_INT_CONST */
+  {   36,   -1 }, /* (25) cte_float ::= TKN_FLOAT_CONST */
+  {   68,   -1 }, /* (26) comp ::= TKN_LT */
+  {   68,   -1 }, /* (27) comp ::= TKN_GT */
+  {   68,   -1 }, /* (28) comp ::= TKN_NE */
+  {   38,   -8 }, /* (29) program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end */
+  {   40,   -2 }, /* (30) vars ::= TKN_VAR vars_prm */
+  {   40,    0 }, /* (31) vars ::= */
+  {   45,   -1 }, /* (32) type ::= TKN_INT */
+  {   45,   -1 }, /* (33) type ::= TKN_FLOAT */
+  {   41,   -2 }, /* (34) functions ::= function functions */
+  {   41,    0 }, /* (35) functions ::= */
+  {   46,  -10 }, /* (36) function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end */
+  {   42,   -3 }, /* (37) body ::= TKN_LBRACE statements TKN_RBRACE */
+  {   49,   -2 }, /* (38) statements ::= statement statements */
+  {   49,    0 }, /* (39) statements ::= */
+  {   50,   -1 }, /* (40) statement ::= assign */
+  {   50,   -1 }, /* (41) statement ::= condition */
+  {   50,   -1 }, /* (42) statement ::= cycle */
+  {   50,   -1 }, /* (43) statement ::= f_call */
+  {   50,   -1 }, /* (44) statement ::= print */
+  {   51,   -3 }, /* (45) assign ::= assign_start expression TKN_SEMI_COLON */
+  {   52,   -7 }, /* (46) condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON */
+  {   53,   -5 }, /* (47) cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end */
+  {   54,   -5 }, /* (48) f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON */
+  {   55,   -5 }, /* (49) print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON */
+  {   64,   -2 }, /* (50) print_prm ::= TKN_STRING_CONST print_prm_prm */
+  {   64,   -2 }, /* (51) print_prm ::= expression print_prm_prm */
+  {   65,   -2 }, /* (52) print_prm_prm ::= TKN_COMMA print_prm */
+  {   65,    0 }, /* (53) print_prm_prm ::= */
+  {   67,   -1 }, /* (54) exp ::= termino */
+  {   67,   -2 }, /* (55) exp ::= exp_begin exp */
+  {   69,   -2 }, /* (56) termino ::= termino_begin termino */
+  {   72,   -3 }, /* (57) factor ::= TKN_LPAREN expression TKN_RPAREN */
+  {   72,   -2 }, /* (58) factor ::= sign factor_prm */
+  {   72,   -1 }, /* (59) factor ::= factor_prm */
+  {   75,   -1 }, /* (60) factor_prm ::= cte_int */
+  {   75,   -1 }, /* (61) factor_prm ::= cte_float */
+  {   63,    0 }, /* (62) call ::= */
+  {   63,   -2 }, /* (63) call ::= expression call_prm */
+  {   76,   -2 }, /* (64) call_prm ::= TKN_COMMA call */
+  {   76,    0 }, /* (65) call_prm ::= */
+  {   74,   -1 }, /* (66) oper ::= TKN_MULT */
+  {   74,   -1 }, /* (67) oper ::= TKN_DIV */
+  {   71,   -1 }, /* (68) sign ::= TKN_PLUS */
+  {   71,   -1 }, /* (69) sign ::= TKN_MINUS */
 };
 
 static void yy_accept(yyParser*);  /* Forward Declaration */
@@ -1107,7 +1114,7 @@ static YYACTIONTYPE yy_reduce(
 /********** Begin reduce actions **********************************************/
         YYMINORTYPE yylhsminor;
       case 0: /* program_id ::= TKN_ID */
-#line 21 "syntax/example.y"
+#line 23 "syntax/example.y"
 {
   addFunction(&ctx->functionTable, yymsp[0].minor.yy0, "void");
   ctx->programFunction = findFunction(&ctx->functionTable, yymsp[0].minor.yy0);
@@ -1116,217 +1123,243 @@ static YYACTIONTYPE yy_reduce(
   yymsp[0].minor.yy0 = strdup(yymsp[0].minor.yy0);
   //printf("Program name: %s\n", yymsp[0].minor.yy0);
 }
-#line 1120 "syntax/example.c"
+#line 1127 "syntax/example.c"
         break;
       case 1: /* program_end ::= TKN_END */
-#line 30 "syntax/example.y"
+#line 32 "syntax/example.y"
 {
   //printf("End of program\n");
   ctx->programFunction = NULL;
   ctx->currentFunction = NULL;
 }
-#line 1129 "syntax/example.c"
-        break;
-      case 2: /* vars_prm ::= vars_prm_prm TKN_COLON type TKN_SEMI_COLON */
-#line 38 "syntax/example.y"
-{
-  handleVariableList(yymsp[-3].minor.yy50, ctx, yymsp[-1].minor.yy0);
-}
 #line 1136 "syntax/example.c"
         break;
-      case 3: /* vars_prm ::= vars_prm_prm TKN_COLON type TKN_SEMI_COLON vars_prm */
-#line 41 "syntax/example.y"
+      case 2: /* vars_prm ::= vars_prm_prm TKN_COLON type TKN_SEMI_COLON */
+#line 40 "syntax/example.y"
 {
-  handleVariableList(yymsp[-4].minor.yy50, ctx, yymsp[-2].minor.yy0);
+  handleVariableList(yymsp[-3].minor.yy38, ctx, yymsp[-1].minor.yy0);
 }
 #line 1143 "syntax/example.c"
         break;
-      case 4: /* vars_prm_prm ::= TKN_ID */
-#line 44 "syntax/example.y"
+      case 3: /* vars_prm ::= vars_prm_prm TKN_COLON type TKN_SEMI_COLON vars_prm */
+#line 43 "syntax/example.y"
 {
-  yylhsminor.yy50 = malloc(sizeof(StringList));
-  yylhsminor.yy50 ->id = strdup(yymsp[0].minor.yy0);
-  yylhsminor.yy50 ->next = NULL;
+  handleVariableList(yymsp[-4].minor.yy38, ctx, yymsp[-2].minor.yy0);
 }
-#line 1152 "syntax/example.c"
-  yymsp[0].minor.yy50 = yylhsminor.yy50;
+#line 1150 "syntax/example.c"
+        break;
+      case 4: /* vars_prm_prm ::= TKN_ID */
+#line 46 "syntax/example.y"
+{
+  yylhsminor.yy38 = malloc(sizeof(StringList));
+  yylhsminor.yy38 ->id = strdup(yymsp[0].minor.yy0);
+  yylhsminor.yy38 ->next = NULL;
+}
+#line 1159 "syntax/example.c"
+  yymsp[0].minor.yy38 = yylhsminor.yy38;
         break;
       case 5: /* vars_prm_prm ::= TKN_ID TKN_COMMA vars_prm_prm */
-#line 49 "syntax/example.y"
+#line 51 "syntax/example.y"
 {
-  yylhsminor.yy50 = malloc(sizeof(StringList));
-  yylhsminor.yy50 ->id = strdup(yymsp[-2].minor.yy0);
-  yylhsminor.yy50 ->next = yymsp[0].minor.yy50;
+  yylhsminor.yy38 = malloc(sizeof(StringList));
+  yylhsminor.yy38 ->id = strdup(yymsp[-2].minor.yy0);
+  yylhsminor.yy38 ->next = yymsp[0].minor.yy38;
 }
-#line 1162 "syntax/example.c"
-  yymsp[-2].minor.yy50 = yylhsminor.yy50;
+#line 1169 "syntax/example.c"
+  yymsp[-2].minor.yy38 = yylhsminor.yy38;
         break;
       case 6: /* function_id ::= TKN_ID */
-#line 63 "syntax/example.y"
+#line 65 "syntax/example.y"
 {
   addFunction(&ctx->functionTable, yymsp[0].minor.yy0, "void");
   ctx->currentFunction = findFunction(&ctx->functionTable, yymsp[0].minor.yy0);
   //printf("Current Function: %s\n",yymsp[0].minor.yy0);
 }
-#line 1172 "syntax/example.c"
+#line 1179 "syntax/example.c"
         break;
       case 7: /* params ::= TKN_ID TKN_COLON type */
-#line 69 "syntax/example.y"
+#line 71 "syntax/example.y"
 {
-  yylhsminor.yy50 = malloc(sizeof(StringList*));
-  yylhsminor.yy50->id = strdup(yymsp[-2].minor.yy0);
-  yylhsminor.yy50->next = NULL;
-  handleVariableList(yylhsminor.yy50, ctx, yymsp[0].minor.yy0);
+  yylhsminor.yy38 = malloc(sizeof(StringList*));
+  yylhsminor.yy38->id = strdup(yymsp[-2].minor.yy0);
+  yylhsminor.yy38->next = NULL;
+  handleVariableList(yylhsminor.yy38, ctx, yymsp[0].minor.yy0);
 }
-#line 1182 "syntax/example.c"
-  yymsp[-2].minor.yy50 = yylhsminor.yy50;
+#line 1189 "syntax/example.c"
+  yymsp[-2].minor.yy38 = yylhsminor.yy38;
         break;
       case 8: /* params ::= TKN_ID TKN_COLON type TKN_COMMA params */
-#line 75 "syntax/example.y"
+#line 77 "syntax/example.y"
 {
-  yylhsminor.yy50 = malloc(sizeof(StringList*));
-  yylhsminor.yy50->id = strdup(yymsp[-4].minor.yy0);
-  yylhsminor.yy50->next = NULL;
-  handleVariableList(yylhsminor.yy50, ctx, yymsp[-2].minor.yy0);
+  yylhsminor.yy38 = malloc(sizeof(StringList*));
+  yylhsminor.yy38->id = strdup(yymsp[-4].minor.yy0);
+  yylhsminor.yy38->next = NULL;
+  handleVariableList(yylhsminor.yy38, ctx, yymsp[-2].minor.yy0);
 }
-#line 1193 "syntax/example.c"
-  yymsp[-4].minor.yy50 = yylhsminor.yy50;
+#line 1200 "syntax/example.c"
+  yymsp[-4].minor.yy38 = yylhsminor.yy38;
         break;
       case 9: /* function_end ::= TKN_SEMI_COLON */
-#line 82 "syntax/example.y"
+#line 84 "syntax/example.y"
 {
   ctx->currentFunction = NULL;
   //printf("Exiting function\n");
 }
-#line 1202 "syntax/example.c"
+#line 1209 "syntax/example.c"
         break;
       case 10: /* assign_start ::= TKN_ID TKN_ASSIGN */
-      case 22: /* termino_begin ::= factor oper */ yytestcase(yyruleno==22);
-#line 98 "syntax/example.y"
+#line 100 "syntax/example.y"
 {
   handleOperator(yymsp[-1].minor.yy0, ctx);
   handleOperation(yymsp[0].minor.yy0, ctx);
 }
-#line 1211 "syntax/example.c"
+#line 1217 "syntax/example.c"
         break;
       case 11: /* condition_start ::= TKN_RPAREN */
-#line 104 "syntax/example.y"
+#line 106 "syntax/example.y"
 {
   handleConditionStart(ctx);
 }
-#line 1218 "syntax/example.c"
+#line 1224 "syntax/example.c"
         break;
       case 12: /* cycle_condition_start ::= TKN_WHILE TKN_LPAREN */
-#line 109 "syntax/example.y"
+#line 111 "syntax/example.y"
 {
   handleCycleConditionStart(ctx);
 }
-#line 1225 "syntax/example.c"
+#line 1231 "syntax/example.c"
         break;
       case 13: /* cycle_expression ::= expression */
-#line 112 "syntax/example.y"
+#line 114 "syntax/example.y"
 {
   handleCycleStart(ctx);
 }
-#line 1232 "syntax/example.c"
+#line 1238 "syntax/example.c"
         break;
       case 14: /* cycle_end ::= TKN_SEMI_COLON */
-#line 115 "syntax/example.y"
+#line 117 "syntax/example.y"
 {
   handleCycleEnd(ctx);
 }
-#line 1239 "syntax/example.c"
+#line 1245 "syntax/example.c"
         break;
       case 15: /* cond ::= */
-#line 129 "syntax/example.y"
+#line 131 "syntax/example.y"
 {
   handleConditionEnd(ctx);
 }
-#line 1246 "syntax/example.c"
+#line 1252 "syntax/example.c"
         break;
       case 16: /* else_start ::= TKN_ELSE */
-#line 134 "syntax/example.y"
+#line 136 "syntax/example.y"
 {
   handleConditionElseStart(ctx);
 }
-#line 1253 "syntax/example.c"
+#line 1259 "syntax/example.c"
         break;
       case 17: /* cond ::= else_start body */
-#line 137 "syntax/example.y"
+#line 139 "syntax/example.y"
 {
   handleConditionElseEnd(ctx);
 }
-#line 1260 "syntax/example.c"
+#line 1266 "syntax/example.c"
         break;
       case 18: /* expression ::= exp */
       case 19: /* expression ::= exp comp exp */ yytestcase(yyruleno==19);
-#line 142 "syntax/example.y"
+#line 144 "syntax/example.y"
 {
   quadsSolve(ctx);
 }
-#line 1268 "syntax/example.c"
+#line 1274 "syntax/example.c"
         break;
       case 20: /* exp_begin ::= termino sign */
-      case 23: /* comp ::= TKN_LT */ yytestcase(yyruleno==23);
-      case 24: /* comp ::= TKN_GT */ yytestcase(yyruleno==24);
-      case 25: /* comp ::= TKN_NE */ yytestcase(yyruleno==25);
-#line 150 "syntax/example.y"
+      case 26: /* comp ::= TKN_LT */ yytestcase(yyruleno==26);
+      case 27: /* comp ::= TKN_GT */ yytestcase(yyruleno==27);
+      case 28: /* comp ::= TKN_NE */ yytestcase(yyruleno==28);
+#line 152 "syntax/example.y"
 {
   handleOperation(yymsp[0].minor.yy0, ctx);
 }
-#line 1278 "syntax/example.c"
+#line 1284 "syntax/example.c"
         break;
       case 21: /* termino ::= factor */
-#line 156 "syntax/example.y"
+#line 158 "syntax/example.y"
+{
+  //handleOperator(yymsp[0].minor.yy0, ctx);
+}
+#line 1291 "syntax/example.c"
+        break;
+      case 22: /* termino_begin ::= factor oper */
+#line 162 "syntax/example.y"
+{
+  //handleOperator(yymsp[-1].minor.yy0, ctx);
+  handleOperation(yymsp[0].minor.yy0, ctx);
+}
+#line 1299 "syntax/example.c"
+        break;
+      case 23: /* factor_prm ::= TKN_ID */
+#line 173 "syntax/example.y"
 {
   handleOperator(yymsp[0].minor.yy0, ctx);
 }
-#line 1285 "syntax/example.c"
+#line 1306 "syntax/example.c"
+        break;
+      case 24: /* cte_int ::= TKN_INT_CONST */
+#line 186 "syntax/example.y"
+{
+  addConstantInt(yymsp[0].minor.yy0, ctx);
+}
+#line 1313 "syntax/example.c"
+        break;
+      case 25: /* cte_float ::= TKN_FLOAT_CONST */
+#line 190 "syntax/example.y"
+{
+  addConstantFloat(yymsp[0].minor.yy0, ctx);
+}
+#line 1320 "syntax/example.c"
         break;
       default:
-      /* (26) program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end */ yytestcase(yyruleno==26);
-      /* (27) vars ::= TKN_VAR vars_prm */ yytestcase(yyruleno==27);
-      /* (28) vars ::= */ yytestcase(yyruleno==28);
-      /* (29) type ::= TKN_INT */ yytestcase(yyruleno==29);
-      /* (30) type ::= TKN_FLOAT */ yytestcase(yyruleno==30);
-      /* (31) functions ::= function functions */ yytestcase(yyruleno==31);
-      /* (32) functions ::= */ yytestcase(yyruleno==32);
-      /* (33) function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end */ yytestcase(yyruleno==33);
-      /* (34) body ::= TKN_LBRACE statements TKN_RBRACE */ yytestcase(yyruleno==34);
-      /* (35) statements ::= statement statements */ yytestcase(yyruleno==35);
-      /* (36) statements ::= */ yytestcase(yyruleno==36);
-      /* (37) statement ::= assign (OPTIMIZED OUT) */ assert(yyruleno!=37);
-      /* (38) statement ::= condition (OPTIMIZED OUT) */ assert(yyruleno!=38);
-      /* (39) statement ::= cycle (OPTIMIZED OUT) */ assert(yyruleno!=39);
-      /* (40) statement ::= f_call (OPTIMIZED OUT) */ assert(yyruleno!=40);
-      /* (41) statement ::= print (OPTIMIZED OUT) */ assert(yyruleno!=41);
-      /* (42) assign ::= assign_start expression TKN_SEMI_COLON */ yytestcase(yyruleno==42);
-      /* (43) condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON */ yytestcase(yyruleno==43);
-      /* (44) cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end */ yytestcase(yyruleno==44);
-      /* (45) f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON */ yytestcase(yyruleno==45);
-      /* (46) print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON */ yytestcase(yyruleno==46);
-      /* (47) print_prm ::= TKN_STRING_CONST print_prm_prm */ yytestcase(yyruleno==47);
-      /* (48) print_prm ::= expression print_prm_prm */ yytestcase(yyruleno==48);
-      /* (49) print_prm_prm ::= TKN_COMMA print_prm */ yytestcase(yyruleno==49);
-      /* (50) print_prm_prm ::= */ yytestcase(yyruleno==50);
-      /* (51) exp ::= termino */ yytestcase(yyruleno==51);
-      /* (52) exp ::= exp_begin exp */ yytestcase(yyruleno==52);
-      /* (53) termino ::= termino_begin termino */ yytestcase(yyruleno==53);
-      /* (54) factor ::= TKN_LPAREN expression TKN_RPAREN */ yytestcase(yyruleno==54);
-      /* (55) factor ::= sign factor_prm */ yytestcase(yyruleno==55);
-      /* (56) factor ::= factor_prm (OPTIMIZED OUT) */ assert(yyruleno!=56);
-      /* (57) factor_prm ::= TKN_ID */ yytestcase(yyruleno==57);
-      /* (58) factor_prm ::= cte (OPTIMIZED OUT) */ assert(yyruleno!=58);
-      /* (59) call ::= */ yytestcase(yyruleno==59);
-      /* (60) call ::= expression call_prm */ yytestcase(yyruleno==60);
-      /* (61) call_prm ::= TKN_COMMA call */ yytestcase(yyruleno==61);
-      /* (62) call_prm ::= */ yytestcase(yyruleno==62);
-      /* (63) cte ::= TKN_INT_CONST */ yytestcase(yyruleno==63);
-      /* (64) cte ::= TKN_FLOAT_CONST */ yytestcase(yyruleno==64);
-      /* (65) oper ::= TKN_MULT */ yytestcase(yyruleno==65);
-      /* (66) oper ::= TKN_DIV */ yytestcase(yyruleno==66);
-      /* (67) sign ::= TKN_PLUS */ yytestcase(yyruleno==67);
-      /* (68) sign ::= TKN_MINUS */ yytestcase(yyruleno==68);
+      /* (29) program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end */ yytestcase(yyruleno==29);
+      /* (30) vars ::= TKN_VAR vars_prm */ yytestcase(yyruleno==30);
+      /* (31) vars ::= */ yytestcase(yyruleno==31);
+      /* (32) type ::= TKN_INT */ yytestcase(yyruleno==32);
+      /* (33) type ::= TKN_FLOAT */ yytestcase(yyruleno==33);
+      /* (34) functions ::= function functions */ yytestcase(yyruleno==34);
+      /* (35) functions ::= */ yytestcase(yyruleno==35);
+      /* (36) function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end */ yytestcase(yyruleno==36);
+      /* (37) body ::= TKN_LBRACE statements TKN_RBRACE */ yytestcase(yyruleno==37);
+      /* (38) statements ::= statement statements */ yytestcase(yyruleno==38);
+      /* (39) statements ::= */ yytestcase(yyruleno==39);
+      /* (40) statement ::= assign (OPTIMIZED OUT) */ assert(yyruleno!=40);
+      /* (41) statement ::= condition (OPTIMIZED OUT) */ assert(yyruleno!=41);
+      /* (42) statement ::= cycle (OPTIMIZED OUT) */ assert(yyruleno!=42);
+      /* (43) statement ::= f_call (OPTIMIZED OUT) */ assert(yyruleno!=43);
+      /* (44) statement ::= print (OPTIMIZED OUT) */ assert(yyruleno!=44);
+      /* (45) assign ::= assign_start expression TKN_SEMI_COLON */ yytestcase(yyruleno==45);
+      /* (46) condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON */ yytestcase(yyruleno==46);
+      /* (47) cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end */ yytestcase(yyruleno==47);
+      /* (48) f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON */ yytestcase(yyruleno==48);
+      /* (49) print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON */ yytestcase(yyruleno==49);
+      /* (50) print_prm ::= TKN_STRING_CONST print_prm_prm */ yytestcase(yyruleno==50);
+      /* (51) print_prm ::= expression print_prm_prm */ yytestcase(yyruleno==51);
+      /* (52) print_prm_prm ::= TKN_COMMA print_prm */ yytestcase(yyruleno==52);
+      /* (53) print_prm_prm ::= */ yytestcase(yyruleno==53);
+      /* (54) exp ::= termino */ yytestcase(yyruleno==54);
+      /* (55) exp ::= exp_begin exp */ yytestcase(yyruleno==55);
+      /* (56) termino ::= termino_begin termino */ yytestcase(yyruleno==56);
+      /* (57) factor ::= TKN_LPAREN expression TKN_RPAREN */ yytestcase(yyruleno==57);
+      /* (58) factor ::= sign factor_prm */ yytestcase(yyruleno==58);
+      /* (59) factor ::= factor_prm (OPTIMIZED OUT) */ assert(yyruleno!=59);
+      /* (60) factor_prm ::= cte_int (OPTIMIZED OUT) */ assert(yyruleno!=60);
+      /* (61) factor_prm ::= cte_float (OPTIMIZED OUT) */ assert(yyruleno!=61);
+      /* (62) call ::= */ yytestcase(yyruleno==62);
+      /* (63) call ::= expression call_prm */ yytestcase(yyruleno==63);
+      /* (64) call_prm ::= TKN_COMMA call */ yytestcase(yyruleno==64);
+      /* (65) call_prm ::= */ yytestcase(yyruleno==65);
+      /* (66) oper ::= TKN_MULT */ yytestcase(yyruleno==66);
+      /* (67) oper ::= TKN_DIV */ yytestcase(yyruleno==67);
+      /* (68) sign ::= TKN_PLUS */ yytestcase(yyruleno==68);
+      /* (69) sign ::= TKN_MINUS */ yytestcase(yyruleno==69);
         break;
 /********** End reduce actions ************************************************/
   };
@@ -1386,10 +1419,10 @@ static void yy_syntax_error(
   ParseCTX_FETCH
 #define TOKEN yyminor
 /************ Begin %syntax_error code ****************************************/
-#line 15 "syntax/example.y"
+#line 17 "syntax/example.y"
 
   printf("Syntax error! At: %s" , yyminor);
-#line 1393 "syntax/example.c"
+#line 1426 "syntax/example.c"
 /************ End %syntax_error code ******************************************/
   ParseARG_STORE /* Suppress warning about unused %extra_argument variable */
   ParseCTX_STORE

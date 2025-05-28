@@ -62,6 +62,20 @@ void addVariable(VariableEntry **table, const char *id, const char* type, int VA
   }
 }
 
+void addConstantInt(char* val, ParserContext * ctx){
+  int newVal = strtol(val, NULL, 10);
+  sPush(&ctx->operators, INT_CONSTANTS_SEGMENT + ctx->INT_CONSTANTS_COUNT);
+  ctx->INT_CONSTANTS[ctx->INT_CONSTANTS_COUNT] = newVal;
+  ctx->INT_CONSTANTS_COUNT++;
+}
+void addConstantFloat(char* val, ParserContext * ctx){
+  float newVal = strtof(val, NULL);
+  sPush(&ctx->operators, FLOAT_CONSTANTS_SEGMENT + ctx->FLOAT_CONSTANTS_COUNT);
+  ctx->FLOAT_CONSTANTS[ctx->FLOAT_CONSTANTS_COUNT] = newVal;
+  ctx->FLOAT_CONSTANTS_COUNT++;
+}
+
+
 void deleteVariable(struct VariableEntry **table, char * id){
   struct VariableEntry *entry;
 

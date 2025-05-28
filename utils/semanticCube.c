@@ -16,6 +16,7 @@ void initSemanticCube() {
     semanticCube[TYPE_INT][OP_SUB][TYPE_INT] = TYPE_INT;
     semanticCube[TYPE_INT][OP_MUL][TYPE_INT] = TYPE_INT;
     semanticCube[TYPE_INT][OP_DIV][TYPE_INT] = TYPE_INT;
+    semanticCube[TYPE_INT][OP_EQ][TYPE_INT] = TYPE_INT;
 
     // int + float = float
     semanticCube[TYPE_INT][OP_ADD][TYPE_FLOAT] = TYPE_FLOAT;
@@ -32,6 +33,7 @@ void initSemanticCube() {
     semanticCube[TYPE_FLOAT][OP_SUB][TYPE_FLOAT] = TYPE_FLOAT;
     semanticCube[TYPE_FLOAT][OP_MUL][TYPE_FLOAT] = TYPE_FLOAT;
     semanticCube[TYPE_FLOAT][OP_DIV][TYPE_FLOAT] = TYPE_FLOAT;
+    semanticCube[TYPE_FLOAT][OP_EQ][TYPE_FLOAT] = TYPE_FLOAT;
 
     // string + string = string
     semanticCube[TYPE_STRING][OP_ADD][TYPE_STRING] = TYPE_STRING;
@@ -40,6 +42,15 @@ void initSemanticCube() {
     semanticCube[TYPE_INT][OP_GT][TYPE_INT] = TYPE_BOOL;
     semanticCube[TYPE_INT][OP_LT][TYPE_INT] = TYPE_BOOL;
     semanticCube[TYPE_INT][OP_DEQ][TYPE_INT] = TYPE_BOOL;
+
+    semanticCube[TYPE_INT][OP_GT][TYPE_FLOAT] = TYPE_BOOL;
+    semanticCube[TYPE_INT][OP_LT][TYPE_FLOAT] = TYPE_BOOL;
+    semanticCube[TYPE_INT][OP_DEQ][TYPE_FLOAT] = TYPE_BOOL;
+
+    semanticCube[TYPE_FLOAT][OP_GT][TYPE_INT] = TYPE_BOOL;
+    semanticCube[TYPE_FLOAT][OP_LT][TYPE_INT] = TYPE_BOOL;
+    semanticCube[TYPE_FLOAT][OP_DEQ][TYPE_INT] = TYPE_BOOL;
+    
     semanticCube[TYPE_FLOAT][OP_GT][TYPE_FLOAT] = TYPE_BOOL;
     semanticCube[TYPE_FLOAT][OP_LT][TYPE_FLOAT] = TYPE_BOOL;
     semanticCube[TYPE_FLOAT][OP_DEQ][TYPE_FLOAT] = TYPE_BOOL;

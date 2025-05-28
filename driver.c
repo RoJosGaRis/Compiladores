@@ -32,6 +32,11 @@ int main(int argc, char** argv){
   ctx->FLOAT_CONSTANTS_COUNT = 0;
   ctx->FLOAT_TEMPS_COUNT = 0;
   ctx->STRING_CONSTANTS_COUNT = 0;
+  ctx->BOOL_TEMPS_COUNT = 0;
+
+  ctx->INT_CONSTANTS = malloc(sizeof(int));
+  ctx->FLOAT_CONSTANTS = malloc(sizeof(float));
+  ctx->STRING_CONSTANTS = malloc(sizeof(char*));
 
   yyscan_t scanner;
   yylex_init(&scanner);

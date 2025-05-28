@@ -1,5 +1,7 @@
 %type vars_prm_prm {StringList*}
 %type params {StringList*}
+%type cte_float {float}
+%type cte_int {int}
 
 %token_type {char*}
 
@@ -154,21 +156,25 @@ exp ::= exp_begin exp .
 
 termino ::= factor(F) .
 {
-  handleOperator(F, ctx);
+  //handleOperator(F, ctx);
 }
 termino_begin ::= factor(F) oper(O) .
 {
-  handleOperator(F, ctx);
+  //handleOperator(F, ctx);
   handleOperation(O, ctx);
 }
 termino ::= termino_begin termino . 
 
 factor ::= TKN_LPAREN expression TKN_RPAREN . 
 
-factor ::= sign factor_prm .
+factor ::= sign factor_prm . 
 factor ::= factor_prm .
-factor_prm ::= TKN_ID . 
-factor_prm ::= cte .
+factor_prm ::= TKN_ID(F) . 
+{
+  handleOperator(F, ctx);
+}
+factor_prm ::= cte_int .
+factor_prm ::= cte_float .
 
 call ::= .
 call ::= expression call_prm .
@@ -176,8 +182,14 @@ call ::= expression call_prm .
 call_prm ::= TKN_COMMA call .
 call_prm ::= .
 
-cte ::= TKN_INT_CONST .
-cte ::= TKN_FLOAT_CONST .
+cte_int ::= TKN_INT_CONST(TK) . 
+{
+  addConstantInt(TK, ctx);
+}
+cte_float ::= TKN_FLOAT_CONST(TK) .
+{
+  addConstantFloat(TK, ctx);
+}
 
 oper ::= TKN_MULT .
 oper ::= TKN_DIV .

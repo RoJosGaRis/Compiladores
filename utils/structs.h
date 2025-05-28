@@ -14,14 +14,14 @@ typedef struct ParserContext{
   Stack operators;
   Stack goToAddresses;
   
-  int*    INT_VARIABLES;
+  // int*    INT_VARIABLES;
+  // int*    INT_TEMPS;
+  // float*  FLOAT_VARIABLES; 
+  // float*  FLOAT_TEMPS;
+  // char**  STRING_TEMPS;
   int*    INT_CONSTANTS;
-  int*    INT_TEMPS;
-  float*  FLOAT_VARIABLES; 
   float*  FLOAT_CONSTANTS;
-  float*  FLOAT_TEMPS;
   char**  STRING_CONSTANTS;
-  char**  STRING_TEMPS;
   int     TEMP_COUNT;
   int     INT_VARIABLES_COUNT;
   int     INT_CONSTANTS_COUNT;
@@ -29,6 +29,7 @@ typedef struct ParserContext{
   int     FLOAT_VARIABLES_COUNT;
   int     FLOAT_CONSTANTS_COUNT;
   int     FLOAT_TEMPS_COUNT;
+  int     BOOL_TEMPS_COUNT;
   int     STRING_CONSTANTS_COUNT;
   
 } ParserContext;

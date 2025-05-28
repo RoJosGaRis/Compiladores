@@ -12,11 +12,13 @@ void function_name_2(d:int, e:float, f:float) [
 ];
 main
 {
+    variable1 = 5 + 3;
+    variable2 = variable1 + variable2 * variable3 - variable4;
     variable2 = variable1 + variable2 * variable3 - variable4 / variable5;
     if(variable1 > variable2){
-      variable = variable2;
+      variable = variable1;
     } else {
-      variable = variable3;
+      variable = variable1;
     };
 
     while(variable1 < variable2 + variable3) {

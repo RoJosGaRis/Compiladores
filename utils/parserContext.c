@@ -2,17 +2,17 @@
 
 void initMemoryMap(ParserContext * ctx)
 {
-  ctx->INT_VARIABLES = NULL;
-  ctx->INT_CONSTANTS = NULL;
-  ctx->INT_TEMPS = NULL;
-  ctx->FLOAT_VARIABLES = NULL; 
-  ctx->FLOAT_CONSTANTS = NULL;
-  ctx->FLOAT_TEMPS = NULL;
-  ctx->STRING_CONSTANTS = NULL;
-  ctx->STRING_TEMPS = NULL;
+  // ctx->INT_VARIABLES = NULL;
+  // ctx->INT_TEMPS = NULL;
+  // ctx->FLOAT_VARIABLES = NULL; 
+  // ctx->FLOAT_TEMPS = NULL;
+  // ctx->STRING_TEMPS = NULL;
   
-  ctx->INT_VARIABLES = malloc(sizeof(int) * ctx->INT_VARIABLES_COUNT);
-  ctx->FLOAT_VARIABLES = malloc(sizeof(int) * ctx->FLOAT_VARIABLES_COUNT);
+  // ctx->INT_VARIABLES = malloc(sizeof(int) * ctx->INT_VARIABLES_COUNT);
+  // ctx->FLOAT_VARIABLES = malloc(sizeof(int) * ctx->FLOAT_VARIABLES_COUNT);
+  ctx->INT_CONSTANTS = malloc(sizeof(int));
+  ctx->FLOAT_CONSTANTS = malloc(sizeof(float));
+  ctx->STRING_CONSTANTS = malloc(sizeof(char*));
 }
 
 void initContext(ParserContext * ctx)
@@ -27,34 +27,57 @@ void initContext(ParserContext * ctx)
 
 void printContextVariables(ParserContext * ctx)
 {
-  printf("============== Parser Context Variables ============\n");
+  // printf("============== Parser Context Variables ============\n");
 
-  for(int i = 0; i < ctx->INT_VARIABLES_COUNT; i++)
-  {
-    ctx->INT_VARIABLES[i] = -999;
-    printf("Variable at index %d has value %d\n", INT_VARIABLES_SEGMENT + i, ctx->INT_VARIABLES[i]);
-  }
-  for(int i = 0; i < ctx->FLOAT_VARIABLES_COUNT; i++)
-  {
-    ctx->FLOAT_VARIABLES[i] = -999.10f;
-    printf("Variable at index %d has value %.2f\n", FLOAT_VARIABLES_SEGMENT + i, ctx->FLOAT_VARIABLES[i]);
-  }
+  // for(int i = 0; i < ctx->INT_VARIABLES_COUNT; i++)
+  // {
+  //   ctx->INT_VARIABLES[i] = -999;
+  //   printf("Variable at index %d has value %d\n", INT_VARIABLES_SEGMENT + i, ctx->INT_VARIABLES[i]);
+  // }
+  // for(int i = 0; i < ctx->FLOAT_VARIABLES_COUNT; i++)
+  // {
+  //   ctx->FLOAT_VARIABLES[i] = -999.10f;
+  //   printf("Variable at index %d has value %.2f\n", FLOAT_VARIABLES_SEGMENT + i, ctx->FLOAT_VARIABLES[i]);
+  // }
 }
 
 int handleQuad(int id1, int id2, OPERATORS op, ParserContext * ctx)
 {
-  if (getResultingType(vAddressToType(id1), op, vAddressToType(id2)) == TYPE_ERROR) {
+  TYPES resultingType = getResultingType(vAddressToType(id1), op, vAddressToType(id2));
+  if (resultingType == TYPE_ERROR) {
     printf("\n%d %d %d\n", id1, op, id2);
+    printf(typeToString(vAddressToType(id1)));
+    printf(opToString(vAddressToType(op)));
+    printf(typeToString(vAddressToType(id2)));
     fprintf(stderr, "ERROR de Tipos, no se puede ejecutar la operación\n");
     exit(EXIT_FAILURE);  // Detiene el programa con código de error
   }
+  int vAddress;
   // OPERATORS oper = stringToOp(op);
-  int vAddress = (int)ctx->INT_TEMPS_COUNT + INT_TEMPS_SEGMENT;
   //printf("\n%d\t%d\t%d\t%d\n", op, id1, id2, vAddress);
   if(op == OP_EQ) addQuad(op, -1, id2, id1, ctx);
   else {
-    addQuad(op, id1, id2, vAddress, ctx);
-    ctx->INT_TEMPS_COUNT++;
+    switch (resultingType)
+    {
+      case TYPE_INT:
+        vAddress = (int)ctx->INT_TEMPS_COUNT + INT_TEMPS_SEGMENT;
+        addQuad(op, id1, id2, vAddress, ctx);
+        ctx->INT_TEMPS_COUNT++;
+      break;
+      case TYPE_FLOAT:
+        vAddress = (int)ctx->FLOAT_TEMPS_COUNT + FLOAT_TEMPS_SEGMENT;
+        addQuad(op, id1, id2, vAddress, ctx);
+        ctx->FLOAT_TEMPS_COUNT++;
+      break;
+      case TYPE_BOOL:
+        vAddress = (int)ctx->BOOL_TEMPS_COUNT + BOOL_TEMPS_SEGMENT;
+        addQuad(op, id1, id2, vAddress, ctx);
+        ctx->BOOL_TEMPS_COUNT++;
+      break;
+      
+    default:
+      break;
+    }
   } 
   return vAddress;
 }
