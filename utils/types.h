@@ -26,6 +26,7 @@ typedef enum {
     OP_GOTO,    // 9
     OP_GOTOF,   // 10
     OP_GOTOT,   // 11
+    OP_PRINT,
     OP_COUNT
 } OPERATORS;
 

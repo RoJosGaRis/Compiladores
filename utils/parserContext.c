@@ -50,7 +50,8 @@ int handleQuad(int id1, int id2, OPERATORS op, ParserContext * ctx)
     printf(opToString(vAddressToType(op)));
     printf(typeToString(vAddressToType(id2)));
     fprintf(stderr, "ERROR de Tipos, no se puede ejecutar la operación\n");
-    exit(EXIT_FAILURE);  // Detiene el programa con código de error
+    exit(EXIT_FAILURE);  // Detiene el programa con código de 
+
   }
   int vAddress;
   // OPERATORS oper = stringToOp(op);
@@ -115,7 +116,7 @@ void handleOperation(char * op, ParserContext * ctx){
 }
 
 void handleConditionStart(ParserContext * ctx){
-  addQuad(stringToOp("GOTOF"), sPop(&ctx->operators), -1, -1,ctx);
+  addQuad(OP_GOTOF, sPop(&ctx->operators), -1, -1,ctx);
   sPush(&ctx->goToAddresses, ctx->quadList->count-1);
 }
 void handleConditionEnd(ParserContext * ctx){
@@ -124,7 +125,7 @@ void handleConditionEnd(ParserContext * ctx){
 }
 void handleConditionElseStart(ParserContext * ctx){
   int index = sPop(&ctx->goToAddresses);
-  addQuad(stringToOp("GOTO"), -1, -1, -1, ctx);
+  addQuad(OP_GOTO, -1, -1, -1, ctx);
   sPush(&ctx->goToAddresses, ctx->quadList->count-1);
 
   ctx->quadList->quadruples[index].addRight = ctx->quadList->count;
@@ -137,12 +138,21 @@ void handleCycleConditionStart(ParserContext * ctx){
   sPush(&ctx->goToAddresses, ctx->quadList->count);
 }
 void handleCycleStart(ParserContext * ctx){
-  addQuad(stringToOp("GOTOF"), sPop(&ctx->operators), -1, -1,ctx);
+  addQuad(OP_GOTOF, sPop(&ctx->operators), -1, -1,ctx);
   sPush(&ctx->goToAddresses, ctx->quadList->count-1);
 }
 void handleCycleEnd(ParserContext * ctx) {
   int index = sPop(&ctx->goToAddresses);
   int returnIndex = sPop(&ctx->goToAddresses);
-  addQuad(stringToOp("GOTO"), -1, returnIndex, -1,ctx);
+  addQuad(OP_GOTO, -1, returnIndex, -1,ctx);
   ctx->quadList->quadruples[index].addRight = ctx->quadList->count;
+}
+
+void handlePrintString(char* val, ParserContext * ctx){
+  printf("Got string: %s", val);
+  addQuad(OP_PRINT, ctx->STRING_CONSTANTS_COUNT + STRING_CONSTANTS_SEGMENT, -1, -1, ctx);
+  addConstantString(val, ctx);
+}
+void handlePrintExpression(char* exp, ParserContext * ctx){
+  addQuad(OP_PRINT, sPop(&ctx->operators), -1, -1, ctx);
 }

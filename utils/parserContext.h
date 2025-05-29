@@ -26,6 +26,9 @@ void handleConditionElseEnd(ParserContext * ctx);
 void handleCycleConditionStart(ParserContext * ctx);
 void handleCycleStart(ParserContext * ctx);
 void handleCycleEnd(ParserContext * ctx);
+void handlePrintString(char* val, ParserContext * ctx);
+void handlePrintExpression(char* exp, ParserContext * ctx);
+
 
 #endif
 

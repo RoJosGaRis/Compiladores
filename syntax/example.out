@@ -5,8 +5,10 @@ State 0:
                        program accept
 
 State 1:
-          print_prm ::= * TKN_STRING_CONST print_prm_prm
-          print_prm ::= * expression print_prm_prm
+          string_to_print ::= * TKN_STRING_CONST
+          expression_to_print ::= * expression
+          print_prm ::= * string_to_print print_prm_prm
+          print_prm ::= * expression_to_print print_prm_prm
           print_prm_prm ::= TKN_COMMA * print_prm
           expression ::= * exp
           expression ::= * exp comp exp
@@ -27,17 +29,19 @@ State 1:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-              TKN_STRING_CONST shift        33     
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+              TKN_STRING_CONST shift-reduce 15     string_to_print ::= TKN_STRING_CONST
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
-                    expression shift        32     
-                     print_prm shift-reduce 52     print_prm_prm ::= TKN_COMMA print_prm
+                    expression shift-reduce 16     expression_to_print ::= expression
+                     print_prm shift-reduce 54     print_prm_prm ::= TKN_COMMA print_prm
+               string_to_print shift        33     
+           expression_to_print shift        32     
                            exp shift        20     
                        termino shift        24     
                      exp_begin shift        9      
@@ -48,8 +52,10 @@ State 1:
 
 State 2:
           print ::= TKN_PRINT TKN_LPAREN * print_prm TKN_RPAREN TKN_SEMI_COLON
-          print_prm ::= * TKN_STRING_CONST print_prm_prm
-          print_prm ::= * expression print_prm_prm
+          string_to_print ::= * TKN_STRING_CONST
+          expression_to_print ::= * expression
+          print_prm ::= * string_to_print print_prm_prm
+          print_prm ::= * expression_to_print print_prm_prm
           expression ::= * exp
           expression ::= * exp comp exp
           exp ::= * termino
@@ -69,17 +75,19 @@ State 2:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-              TKN_STRING_CONST shift        33     
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+              TKN_STRING_CONST shift-reduce 15     string_to_print ::= TKN_STRING_CONST
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
-                    expression shift        32     
+                    expression shift-reduce 16     expression_to_print ::= expression
                      print_prm shift        55     
+               string_to_print shift        33     
+           expression_to_print shift        32     
                            exp shift        20     
                        termino shift        24     
                      exp_begin shift        9      
@@ -110,12 +118,12 @@ State 3:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
                     expression shift-reduce 13     cycle_expression ::= expression
@@ -143,7 +151,7 @@ State 4:
           factor_prm ::= * TKN_ID
           factor_prm ::= * cte_int
           factor_prm ::= * cte_float
-     (62) call ::= *
+     (64) call ::= *
           call ::= * expression call_prm
           call_prm ::= TKN_COMMA * call
           cte_int ::= * TKN_INT_CONST
@@ -151,16 +159,16 @@ State 4:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
                     expression shift        39     
-                          call shift-reduce 64     call_prm ::= TKN_COMMA call
+                          call shift-reduce 66     call_prm ::= TKN_COMMA call
                            exp shift        20     
                        termino shift        24     
                      exp_begin shift        9      
@@ -168,7 +176,7 @@ State 4:
                         factor shift        23     
                  termino_begin shift        13     
                     factor_prm shift        23       /* because factor_prm==factor */
-                     {default} reduce       62     call ::=
+                     {default} reduce       64     call ::=
 
 State 5:
           f_call ::= TKN_ID TKN_LPAREN * call TKN_RPAREN TKN_SEMI_COLON
@@ -186,19 +194,19 @@ State 5:
           factor_prm ::= * TKN_ID
           factor_prm ::= * cte_int
           factor_prm ::= * cte_float
-     (62) call ::= *
+     (64) call ::= *
           call ::= * expression call_prm
           cte_int ::= * TKN_INT_CONST
           cte_float ::= * TKN_FLOAT_CONST
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
                     expression shift        39     
@@ -210,7 +218,7 @@ State 5:
                         factor shift        23     
                  termino_begin shift        13     
                     factor_prm shift        23       /* because factor_prm==factor */
-                     {default} reduce       62     call ::=
+                     {default} reduce       64     call ::=
 
 State 6:
           condition ::= TKN_IF TKN_LPAREN * expression condition_start body cond TKN_SEMI_COLON
@@ -233,12 +241,12 @@ State 6:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
                     expression shift        38     
@@ -271,12 +279,12 @@ State 7:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
                     expression shift        61     
@@ -309,12 +317,12 @@ State 8:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
                     expression shift        62     
@@ -345,15 +353,15 @@ State 9:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
-                           exp shift-reduce 55     exp ::= exp_begin exp
+                           exp shift-reduce 57     exp ::= exp_begin exp
                        termino shift        24     
                      exp_begin shift        9      
                           sign shift        14     
@@ -380,15 +388,15 @@ State 10:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
-                           exp shift-reduce 19     expression ::= exp comp exp
+                           exp shift-reduce 21     expression ::= exp comp exp
                        termino shift        24     
                      exp_begin shift        9      
                           sign shift        14     
@@ -399,7 +407,7 @@ State 10:
 State 11:
           statements ::= * statement statements
           statements ::= statement * statements
-     (39) statements ::= *
+     (41) statements ::= *
           statement ::= * assign
           statement ::= * condition
           statement ::= * cycle
@@ -417,7 +425,7 @@ State 11:
                         TKN_IF shift        60     
                      TKN_WHILE shift        58     
                      TKN_PRINT shift        56     
-                    statements shift-reduce 38     statements ::= statement statements
+                    statements shift-reduce 40     statements ::= statement statements
                      statement shift        11     
                         assign shift        11       /* because assign==statement */
                      condition shift        11       /* because condition==statement */
@@ -426,12 +434,12 @@ State 11:
                          print shift        11       /* because print==statement */
                   assign_start shift        7      
          cycle_condition_start shift        3      
-                     {default} reduce       39     statements ::=
+                     {default} reduce       41     statements ::=
 
 State 12:
           body ::= TKN_LBRACE * statements TKN_RBRACE
           statements ::= * statement statements
-     (39) statements ::= *
+     (41) statements ::= *
           statement ::= * assign
           statement ::= * condition
           statement ::= * cycle
@@ -458,7 +466,7 @@ State 12:
                          print shift        11       /* because print==statement */
                   assign_start shift        7      
          cycle_condition_start shift        3      
-                     {default} reduce       39     statements ::=
+                     {default} reduce       41     statements ::=
 
 State 13:
           termino ::= * factor
@@ -476,15 +484,15 @@ State 13:
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
                     TKN_LPAREN shift        8      
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
                      cte_float shift        23       /* because cte_float==factor */
                        cte_int shift        23       /* because cte_int==factor */
-                       termino shift-reduce 56     termino ::= termino_begin termino
+                       termino shift-reduce 58     termino ::= termino_begin termino
                           sign shift        14     
                         factor shift        23     
                  termino_begin shift        13     
@@ -498,12 +506,12 @@ State 14:
           cte_int ::= * TKN_INT_CONST
           cte_float ::= * TKN_FLOAT_CONST
 
-                        TKN_ID shift-reduce 23     factor_prm ::= TKN_ID
-                 TKN_INT_CONST shift-reduce 24     cte_int ::= TKN_INT_CONST
-               TKN_FLOAT_CONST shift-reduce 25     cte_float ::= TKN_FLOAT_CONST
-                     cte_float shift-reduce 58     factor ::= sign factor_prm  /* because cte_float==factor_prm */
-                       cte_int shift-reduce 58     factor ::= sign factor_prm  /* because cte_int==factor_prm */
-                    factor_prm shift-reduce 58     factor ::= sign factor_prm
+                        TKN_ID shift-reduce 25     factor_prm ::= TKN_ID
+                 TKN_INT_CONST shift-reduce 26     cte_int ::= TKN_INT_CONST
+               TKN_FLOAT_CONST shift-reduce 27     cte_float ::= TKN_FLOAT_CONST
+                     cte_float shift-reduce 60     factor ::= sign factor_prm  /* because cte_float==factor_prm */
+                       cte_int shift-reduce 60     factor ::= sign factor_prm  /* because cte_int==factor_prm */
+                    factor_prm shift-reduce 60     factor ::= sign factor_prm
 
 State 15:
           vars_prm ::= * vars_prm_prm TKN_COLON type TKN_SEMI_COLON
@@ -527,53 +535,53 @@ State 16:
 
                         TKN_ID shift        48     
                   vars_prm_prm shift        50     
-                      vars_prm shift-reduce 30     vars ::= TKN_VAR vars_prm
+                      vars_prm shift-reduce 32     vars ::= TKN_VAR vars_prm
 
 State 17:
           functions ::= * function functions
           functions ::= function * functions
-     (35) functions ::= *
+     (37) functions ::= *
           function ::= * TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end
 
                       TKN_VOID shift        31     
-                     functions shift-reduce 34     functions ::= function functions
+                     functions shift-reduce 36     functions ::= function functions
                       function shift        17     
-                     {default} reduce       35     functions ::=
+                     {default} reduce       37     functions ::=
 
 State 18:
           condition ::= TKN_IF TKN_LPAREN expression condition_start body * cond TKN_SEMI_COLON
-     (15) cond ::= *
+     (17) cond ::= *
           else_start ::= * TKN_ELSE
           cond ::= * else_start body
 
-                      TKN_ELSE shift-reduce 16     else_start ::= TKN_ELSE
+                      TKN_ELSE shift-reduce 18     else_start ::= TKN_ELSE
                           cond shift        59     
                     else_start shift        36     
-                     {default} reduce       15     cond ::=
+                     {default} reduce       17     cond ::=
 
 State 19:
           program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars * functions TKN_MAIN body program_end
           functions ::= * function functions
-     (35) functions ::= *
+     (37) functions ::= *
           function ::= * TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end
 
                       TKN_VOID shift        31     
                      functions shift        67     
                       function shift        17     
-                     {default} reduce       35     functions ::=
+                     {default} reduce       37     functions ::=
 
 State 20:
-     (18) expression ::= exp *
+     (20) expression ::= exp *
           expression ::= exp * comp exp
           comp ::= * TKN_LT
           comp ::= * TKN_GT
           comp ::= * TKN_NE
 
-                        TKN_LT shift-reduce 26     comp ::= TKN_LT
-                        TKN_GT shift-reduce 27     comp ::= TKN_GT
-                        TKN_NE shift-reduce 28     comp ::= TKN_NE
+                        TKN_LT shift-reduce 28     comp ::= TKN_LT
+                        TKN_GT shift-reduce 29     comp ::= TKN_GT
+                        TKN_NE shift-reduce 30     comp ::= TKN_NE
                           comp shift        10     
-                     {default} reduce       18     expression ::= exp
+                     {default} reduce       20     expression ::= exp
 
 State 21:
           type ::= * TKN_INT
@@ -581,8 +589,8 @@ State 21:
           params ::= TKN_ID TKN_COLON * type
           params ::= TKN_ID TKN_COLON * type TKN_COMMA params
 
-                       TKN_INT shift-reduce 32     type ::= TKN_INT
-                     TKN_FLOAT shift-reduce 33     type ::= TKN_FLOAT
+                       TKN_INT shift-reduce 34     type ::= TKN_INT
+                     TKN_FLOAT shift-reduce 35     type ::= TKN_FLOAT
                           type shift        45     
 
 State 22:
@@ -591,31 +599,31 @@ State 22:
           type ::= * TKN_INT
           type ::= * TKN_FLOAT
 
-                       TKN_INT shift-reduce 32     type ::= TKN_INT
-                     TKN_FLOAT shift-reduce 33     type ::= TKN_FLOAT
+                       TKN_INT shift-reduce 34     type ::= TKN_INT
+                     TKN_FLOAT shift-reduce 35     type ::= TKN_FLOAT
                           type shift        49     
 
 State 23:
-     (21) termino ::= factor *
+     (23) termino ::= factor *
           termino_begin ::= factor * oper
           oper ::= * TKN_MULT
           oper ::= * TKN_DIV
 
-                      TKN_MULT shift-reduce 66     oper ::= TKN_MULT
-                       TKN_DIV shift-reduce 67     oper ::= TKN_DIV
-                          oper shift-reduce 22     termino_begin ::= factor oper
-                     {default} reduce       21     termino ::= factor
+                      TKN_MULT shift-reduce 68     oper ::= TKN_MULT
+                       TKN_DIV shift-reduce 69     oper ::= TKN_DIV
+                          oper shift-reduce 24     termino_begin ::= factor oper
+                     {default} reduce       23     termino ::= factor
 
 State 24:
-     (54) exp ::= termino *
+     (56) exp ::= termino *
           exp_begin ::= termino * sign
           sign ::= * TKN_PLUS
           sign ::= * TKN_MINUS
 
-                      TKN_PLUS shift-reduce 68     sign ::= TKN_PLUS
-                     TKN_MINUS shift-reduce 69     sign ::= TKN_MINUS
-                          sign shift-reduce 20     exp_begin ::= termino sign
-                     {default} reduce       54     exp ::= termino
+                      TKN_PLUS shift-reduce 70     sign ::= TKN_PLUS
+                     TKN_MINUS shift-reduce 71     sign ::= TKN_MINUS
+                          sign shift-reduce 22     exp_begin ::= termino sign
+                     {default} reduce       56     exp ::= termino
 
 State 25:
           params ::= * TKN_ID TKN_COLON type
@@ -630,7 +638,7 @@ State 26:
           function_end ::= * TKN_SEMI_COLON
 
                 TKN_SEMI_COLON shift-reduce 9      function_end ::= TKN_SEMI_COLON
-                  function_end shift-reduce 36     function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end
+                  function_end shift-reduce 38     function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end
 
 State 27:
           function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars * body TKN_RBRACKET function_end
@@ -649,12 +657,12 @@ State 28:
 
 State 29:
           vars ::= * TKN_VAR vars_prm
-     (31) vars ::= *
+     (33) vars ::= *
           function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET * vars body TKN_RBRACKET function_end
 
                        TKN_VAR shift        16     
                           vars shift        27     
-                     {default} reduce       31     vars ::=
+                     {default} reduce       33     vars ::=
 
 State 30:
           function ::= TKN_VOID function_id TKN_LPAREN * params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end
@@ -672,29 +680,29 @@ State 31:
                    function_id shift        53     
 
 State 32:
-          print_prm ::= expression * print_prm_prm
+          print_prm ::= expression_to_print * print_prm_prm
           print_prm_prm ::= * TKN_COMMA print_prm
-     (53) print_prm_prm ::= *
+     (55) print_prm_prm ::= *
 
                      TKN_COMMA shift        1      
-                 print_prm_prm shift-reduce 51     print_prm ::= expression print_prm_prm
-                     {default} reduce       53     print_prm_prm ::=
+                 print_prm_prm shift-reduce 53     print_prm ::= expression_to_print print_prm_prm
+                     {default} reduce       55     print_prm_prm ::=
 
 State 33:
-          print_prm ::= TKN_STRING_CONST * print_prm_prm
+          print_prm ::= string_to_print * print_prm_prm
           print_prm_prm ::= * TKN_COMMA print_prm
-     (53) print_prm_prm ::= *
+     (55) print_prm_prm ::= *
 
                      TKN_COMMA shift        1      
-                 print_prm_prm shift-reduce 50     print_prm ::= TKN_STRING_CONST print_prm_prm
-                     {default} reduce       53     print_prm_prm ::=
+                 print_prm_prm shift-reduce 52     print_prm ::= string_to_print print_prm_prm
+                     {default} reduce       55     print_prm_prm ::=
 
 State 34:
           cycle_end ::= * TKN_SEMI_COLON
           cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body * cycle_end
 
                 TKN_SEMI_COLON shift-reduce 14     cycle_end ::= TKN_SEMI_COLON
-                     cycle_end shift-reduce 47     cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end
+                     cycle_end shift-reduce 49     cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end
 
 State 35:
           body ::= * TKN_LBRACE statements TKN_RBRACE
@@ -708,7 +716,7 @@ State 36:
           cond ::= else_start * body
 
                     TKN_LBRACE shift        12     
-                          body shift-reduce 17     cond ::= else_start body
+                          body shift-reduce 19     cond ::= else_start body
 
 State 37:
           body ::= * TKN_LBRACE statements TKN_RBRACE
@@ -727,11 +735,11 @@ State 38:
 State 39:
           call ::= expression * call_prm
           call_prm ::= * TKN_COMMA call
-     (65) call_prm ::= *
+     (67) call_prm ::= *
 
                      TKN_COMMA shift        4      
-                      call_prm shift-reduce 63     call ::= expression call_prm
-                     {default} reduce       65     call_prm ::=
+                      call_prm shift-reduce 65     call ::= expression call_prm
+                     {default} reduce       67     call_prm ::=
 
 State 40:
           program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body * program_end
@@ -750,11 +758,11 @@ State 41:
 State 42:
           program ::= TKN_PROGRAM program_id TKN_SEMI_COLON * vars functions TKN_MAIN body program_end
           vars ::= * TKN_VAR vars_prm
-     (31) vars ::= *
+     (33) vars ::= *
 
                        TKN_VAR shift        16     
                           vars shift        19     
-                     {default} reduce       31     vars ::=
+                     {default} reduce       33     vars ::=
 
 State 43:
           program ::= TKN_PROGRAM * program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end
@@ -825,7 +833,7 @@ State 53:
 State 54:
           print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN * TKN_SEMI_COLON
 
-                TKN_SEMI_COLON shift-reduce 49     print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON
+                TKN_SEMI_COLON shift-reduce 51     print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON
 
 State 55:
           print ::= TKN_PRINT TKN_LPAREN print_prm * TKN_RPAREN TKN_SEMI_COLON
@@ -850,7 +858,7 @@ State 58:
 State 59:
           condition ::= TKN_IF TKN_LPAREN expression condition_start body cond * TKN_SEMI_COLON
 
-                TKN_SEMI_COLON shift-reduce 46     condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON
+                TKN_SEMI_COLON shift-reduce 48     condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON
 
 State 60:
           condition ::= TKN_IF * TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON
@@ -860,17 +868,17 @@ State 60:
 State 61:
           assign ::= assign_start expression * TKN_SEMI_COLON
 
-                TKN_SEMI_COLON shift-reduce 45     assign ::= assign_start expression TKN_SEMI_COLON
+                TKN_SEMI_COLON shift-reduce 47     assign ::= assign_start expression TKN_SEMI_COLON
 
 State 62:
           factor ::= TKN_LPAREN expression * TKN_RPAREN
 
-                    TKN_RPAREN shift-reduce 57     factor ::= TKN_LPAREN expression TKN_RPAREN
+                    TKN_RPAREN shift-reduce 59     factor ::= TKN_LPAREN expression TKN_RPAREN
 
 State 63:
           f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN * TKN_SEMI_COLON
 
-                TKN_SEMI_COLON shift-reduce 48     f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON
+                TKN_SEMI_COLON shift-reduce 50     f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON
 
 State 64:
           f_call ::= TKN_ID TKN_LPAREN call * TKN_RPAREN TKN_SEMI_COLON
@@ -880,12 +888,12 @@ State 64:
 State 65:
           body ::= TKN_LBRACE statements * TKN_RBRACE
 
-                    TKN_RBRACE shift-reduce 37     body ::= TKN_LBRACE statements TKN_RBRACE
+                    TKN_RBRACE shift-reduce 39     body ::= TKN_LBRACE statements TKN_RBRACE
 
 State 66:
-     (29) program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end *
+     (31) program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end *
 
-                             $ reduce       29     program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end
+                             $ reduce       31     program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end
 
 State 67:
           program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions * TKN_MAIN body program_end
@@ -966,31 +974,33 @@ The first-set of non-terminals is shown after the name.
    62: cycle_end: TKN_SEMI_COLON
    63: call: <lambda> TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
    64: print_prm: TKN_ID TKN_LPAREN TKN_STRING_CONST TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
-   65: print_prm_prm: <lambda> TKN_COMMA
-   66: else_start: TKN_ELSE
-   67: exp: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
-   68: comp: TKN_LT TKN_GT TKN_NE
-   69: termino: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
-   70: exp_begin: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
-   71: sign: TKN_PLUS TKN_MINUS
-   72: factor: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
-   73: termino_begin: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
-   74: oper: TKN_MULT TKN_DIV
-   75: factor_prm: TKN_ID TKN_INT_CONST TKN_FLOAT_CONST
-   76: call_prm: <lambda> TKN_COMMA
+   65: string_to_print: TKN_STRING_CONST
+   66: expression_to_print: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
+   67: print_prm_prm: <lambda> TKN_COMMA
+   68: else_start: TKN_ELSE
+   69: exp: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
+   70: comp: TKN_LT TKN_GT TKN_NE
+   71: termino: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
+   72: exp_begin: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
+   73: sign: TKN_PLUS TKN_MINUS
+   74: factor: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
+   75: termino_begin: TKN_ID TKN_LPAREN TKN_INT_CONST TKN_FLOAT_CONST TKN_PLUS TKN_MINUS
+   76: oper: TKN_MULT TKN_DIV
+   77: factor_prm: TKN_ID TKN_INT_CONST TKN_FLOAT_CONST
+   78: call_prm: <lambda> TKN_COMMA
 ----------------------------------------------------
 Syntax-only Symbols:
 The following symbols never carry semantic content.
 
 $ TKN_PROGRAM TKN_SEMI_COLON TKN_MAIN TKN_END TKN_VAR TKN_COLON TKN_COMMA
 TKN_INT TKN_FLOAT TKN_VOID TKN_LPAREN TKN_RPAREN TKN_LBRACKET TKN_RBRACKET
-TKN_LBRACE TKN_RBRACE TKN_IF TKN_WHILE TKN_PRINT TKN_STRING_CONST TKN_ELSE
-TKN_MULT TKN_DIV TKN_PLUS TKN_MINUS TKN_DO params cte_float cte_int program
-program_id vars functions body program_end vars_prm function function_id
-function_end statements statement assign condition cycle f_call print
-assign_start expression condition_start cond cycle_condition_start
-cycle_expression cycle_end call print_prm print_prm_prm else_start exp comp
-termino exp_begin termino_begin factor_prm call_prm
+TKN_LBRACE TKN_RBRACE TKN_IF TKN_WHILE TKN_PRINT TKN_ELSE TKN_MULT TKN_DIV
+TKN_PLUS TKN_MINUS TKN_DO params cte_float cte_int program program_id vars
+functions body program_end vars_prm function function_id function_end
+statements statement assign condition cycle f_call print assign_start
+condition_start cond cycle_condition_start cycle_expression cycle_end call
+print_prm string_to_print expression_to_print print_prm_prm else_start exp
+comp termino exp_begin termino_begin factor_prm call_prm
 ----------------------------------------------------
 Rules:
    0: program_id ::= TKN_ID.
@@ -1008,58 +1018,60 @@ Rules:
   12: cycle_condition_start ::= TKN_WHILE TKN_LPAREN. [TKN_WHILE precedence=1]
   13: cycle_expression ::= expression.
   14: cycle_end ::= TKN_SEMI_COLON.
-  15: cond ::=.
-  16: else_start ::= TKN_ELSE. [TKN_ELSE precedence=1]
-  17: cond ::= else_start body.
-  18: expression ::= exp.
-  19: expression ::= exp comp exp.
-  20: exp_begin ::= termino sign.
-  21: termino ::= factor.
-  22: termino_begin ::= factor oper.
-  23: factor_prm ::= TKN_ID.
-  24: cte_int ::= TKN_INT_CONST. [TKN_INT_CONST precedence=1]
-  25: cte_float ::= TKN_FLOAT_CONST. [TKN_FLOAT_CONST precedence=1]
-  26: comp ::= TKN_LT.
-  27: comp ::= TKN_GT.
-  28: comp ::= TKN_NE.
-  29: program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end.
-  30: vars ::= TKN_VAR vars_prm.
-  31: vars ::=.
-  32: type ::= TKN_INT. [TKN_INT precedence=1]
-  33: type ::= TKN_FLOAT. [TKN_FLOAT precedence=1]
-  34: functions ::= function functions.
-  35: functions ::=.
-  36: function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end.
-  37: body ::= TKN_LBRACE statements TKN_RBRACE.
-  38: statements ::= statement statements.
-  39: statements ::=.
-  40: statement ::= assign.
-  41: statement ::= condition.
-  42: statement ::= cycle.
-  43: statement ::= f_call.
-  44: statement ::= print.
-  45: assign ::= assign_start expression TKN_SEMI_COLON.
-  46: condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON. [TKN_IF precedence=1]
-  47: cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end.
-  48: f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON.
-  49: print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON. [TKN_PRINT precedence=1]
-  50: print_prm ::= TKN_STRING_CONST print_prm_prm. [TKN_STRING_CONST precedence=1]
-  51: print_prm ::= expression print_prm_prm.
-  52: print_prm_prm ::= TKN_COMMA print_prm.
-  53: print_prm_prm ::=.
-  54: exp ::= termino.
-  55: exp ::= exp_begin exp.
-  56: termino ::= termino_begin termino.
-  57: factor ::= TKN_LPAREN expression TKN_RPAREN.
-  58: factor ::= sign factor_prm.
-  59: factor ::= factor_prm.
-  60: factor_prm ::= cte_int.
-  61: factor_prm ::= cte_float.
-  62: call ::=.
-  63: call ::= expression call_prm.
-  64: call_prm ::= TKN_COMMA call.
-  65: call_prm ::=.
-  66: oper ::= TKN_MULT.
-  67: oper ::= TKN_DIV.
-  68: sign ::= TKN_PLUS.
-  69: sign ::= TKN_MINUS.
+  15: string_to_print ::= TKN_STRING_CONST. [TKN_STRING_CONST precedence=1]
+  16: expression_to_print ::= expression.
+  17: cond ::=.
+  18: else_start ::= TKN_ELSE. [TKN_ELSE precedence=1]
+  19: cond ::= else_start body.
+  20: expression ::= exp.
+  21: expression ::= exp comp exp.
+  22: exp_begin ::= termino sign.
+  23: termino ::= factor.
+  24: termino_begin ::= factor oper.
+  25: factor_prm ::= TKN_ID.
+  26: cte_int ::= TKN_INT_CONST. [TKN_INT_CONST precedence=1]
+  27: cte_float ::= TKN_FLOAT_CONST. [TKN_FLOAT_CONST precedence=1]
+  28: comp ::= TKN_LT.
+  29: comp ::= TKN_GT.
+  30: comp ::= TKN_NE.
+  31: program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end.
+  32: vars ::= TKN_VAR vars_prm.
+  33: vars ::=.
+  34: type ::= TKN_INT. [TKN_INT precedence=1]
+  35: type ::= TKN_FLOAT. [TKN_FLOAT precedence=1]
+  36: functions ::= function functions.
+  37: functions ::=.
+  38: function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end.
+  39: body ::= TKN_LBRACE statements TKN_RBRACE.
+  40: statements ::= statement statements.
+  41: statements ::=.
+  42: statement ::= assign.
+  43: statement ::= condition.
+  44: statement ::= cycle.
+  45: statement ::= f_call.
+  46: statement ::= print.
+  47: assign ::= assign_start expression TKN_SEMI_COLON.
+  48: condition ::= TKN_IF TKN_LPAREN expression condition_start body cond TKN_SEMI_COLON. [TKN_IF precedence=1]
+  49: cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end.
+  50: f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON.
+  51: print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON. [TKN_PRINT precedence=1]
+  52: print_prm ::= string_to_print print_prm_prm.
+  53: print_prm ::= expression_to_print print_prm_prm.
+  54: print_prm_prm ::= TKN_COMMA print_prm.
+  55: print_prm_prm ::=.
+  56: exp ::= termino.
+  57: exp ::= exp_begin exp.
+  58: termino ::= termino_begin termino.
+  59: factor ::= TKN_LPAREN expression TKN_RPAREN.
+  60: factor ::= sign factor_prm.
+  61: factor ::= factor_prm.
+  62: factor_prm ::= cte_int.
+  63: factor_prm ::= cte_float.
+  64: call ::=.
+  65: call ::= expression call_prm.
+  66: call_prm ::= TKN_COMMA call.
+  67: call_prm ::=.
+  68: oper ::= TKN_MULT.
+  69: oper ::= TKN_DIV.
+  70: sign ::= TKN_PLUS.
+  71: sign ::= TKN_MINUS.

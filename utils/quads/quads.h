@@ -7,6 +7,6 @@
 
 // Declaraciones de funciones
 void addQuad(OPERATORS op, int left, int right, int result, ParserContext * ctx);
-void printQuads(ParserContext * ctx);
+void printQuads(FILE* fileptr, ParserContext * ctx);
 
 #endif

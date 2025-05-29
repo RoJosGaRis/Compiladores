@@ -15,6 +15,7 @@ void handleVariableList(StringList* vars, ParserContext * ctx, const char* type)
 void addVariable(VariableEntry **table, const char *id, const char* type, int VAddress);
 void addConstantInt(char* val, ParserContext * ctx);
 void addConstantFloat(char* val, ParserContext * ctx);
+void addConstantString(char * val, ParserContext * ctx);
 void deleteVariable(struct VariableEntry **table, char * id);
 struct VariableEntry * findVariable(struct VariableEntry **table, char *id);
 void printVariableTable(VariableEntry* table);

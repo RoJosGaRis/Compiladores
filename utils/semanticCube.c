@@ -15,8 +15,8 @@ void initSemanticCube() {
     semanticCube[TYPE_INT][OP_ADD][TYPE_INT] = TYPE_INT;
     semanticCube[TYPE_INT][OP_SUB][TYPE_INT] = TYPE_INT;
     semanticCube[TYPE_INT][OP_MUL][TYPE_INT] = TYPE_INT;
-    semanticCube[TYPE_INT][OP_DIV][TYPE_INT] = TYPE_INT;
     semanticCube[TYPE_INT][OP_EQ][TYPE_INT] = TYPE_INT;
+    semanticCube[TYPE_INT][OP_DIV][TYPE_INT] = TYPE_FLOAT;
 
     // int + float = float
     semanticCube[TYPE_INT][OP_ADD][TYPE_FLOAT] = TYPE_FLOAT;

@@ -69,12 +69,18 @@ void addConstantInt(char* val, ParserContext * ctx){
   ctx->INT_CONSTANTS_COUNT++;
 }
 void addConstantFloat(char* val, ParserContext * ctx){
+  printf("\nNEW VAL: %s\n", val);
   float newVal = strtof(val, NULL);
+  printf("\nNEW VAL: %f\n", newVal);
   sPush(&ctx->operators, FLOAT_CONSTANTS_SEGMENT + ctx->FLOAT_CONSTANTS_COUNT);
   ctx->FLOAT_CONSTANTS[ctx->FLOAT_CONSTANTS_COUNT] = newVal;
   ctx->FLOAT_CONSTANTS_COUNT++;
 }
 
+void addConstantString(char * val, ParserContext * ctx){
+  ctx->STRING_CONSTANTS[ctx->STRING_CONSTANTS_COUNT] = val;
+  ctx->STRING_CONSTANTS_COUNT++;
+}
 
 void deleteVariable(struct VariableEntry **table, char * id){
   struct VariableEntry *entry;

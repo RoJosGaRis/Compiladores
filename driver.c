@@ -5,12 +5,13 @@
 #include "syntax/tokenNode.h"
 #include "utils/parserContext.h"
 #include "utils/semanticCube.h"
+#include "machine/machineDriver.h"
 #include "flex/scanner.h"
 
 void* ParseAlloc(void* (*allocProc)(size_t));
 void* Parse(void*, int, const char*, ParserContext * ctx);
 void* ParseFree(void*, void(*freeProc)(void*));
-
+void * parser;
 
 int main(int argc, char** argv){
   
@@ -45,7 +46,7 @@ int main(int argc, char** argv){
   struct Queue q;
   qInitialize(&q);
   
-  void * parser = ParseAlloc(malloc);
+  parser = ParseAlloc(malloc);
   
   int lexCode;
   do{
@@ -58,7 +59,19 @@ int main(int argc, char** argv){
     Parse(parser, newToken->type, newToken->text, ctx);
   } while(lexCode > 0);
   printFunctionTable(ctx->functionTable);
-  printQuads(ctx);
+  FILE *newFilePtr;
+  char filename[256];  // Enough space for most filenames
+
+  printf("%s", ctx->programFunction);
+  sprintf(filename, "%s.txt", ctx->programFunction->name);
+  newFilePtr = fopen(filename, "w");
+
+  if (newFilePtr == NULL) {
+      fprintf(stderr, "Error: Could not create file %s\n", filename);
+      exit(EXIT_FAILURE);
+  }
+  printQuads(newFilePtr, ctx);
+  fclose(newFilePtr);
   // initMemoryMap(ctx);
   // printContextVariables(ctx);
   // TokenNode* token;
@@ -72,5 +85,8 @@ int main(int argc, char** argv){
 
   yylex_destroy(scanner);
   ParseFree(parser, free);
+
+  machine_run(filename);
+
   return 0;
 }

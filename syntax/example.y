@@ -31,8 +31,8 @@ program_id(ID) ::= TKN_ID(ID) . {
 
 program_end ::= TKN_END . {
   //printf("End of program\n");
-  ctx->programFunction = NULL;
-  ctx->currentFunction = NULL;
+  //ctx->programFunction = NULL;
+  //ctx->currentFunction = NULL;
 }
 
 vars ::= TKN_VAR vars_prm .
@@ -120,10 +120,18 @@ cycle_end ::= TKN_SEMI_COLON . {
 cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end.
 
 f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON .
+
 print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON .
 
-print_prm ::= TKN_STRING_CONST print_prm_prm .
-print_prm ::= expression print_prm_prm .
+string_to_print ::= TKN_STRING_CONST(TKN) . {
+  handlePrintString(TKN, ctx);
+}
+expression_to_print ::= expression(E) .
+{
+  handlePrintExpression(E, ctx);
+}
+print_prm ::= string_to_print print_prm_prm .
+print_prm ::= expression_to_print print_prm_prm .
 
 print_prm_prm ::= TKN_COMMA print_prm .
 print_prm_prm ::= .

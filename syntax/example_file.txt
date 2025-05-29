@@ -1,33 +1,10 @@
 program name;
-var variable : int; variable2, variable3 : float;
-void function_name(a:float, b:int, c:int) [
-  var variable1, variable2 : int; variable2 : float;
-  {
-    variable3 = variablex2;
-  }
-];
+var variable, variable1, variable4 : int; variable2, variable3, variable5 : float;
 main
 {
-    variable = variable2;
-    variable3 = 3.54 - 4.5 / 5.6 + 6.7;
-    variable3 = 3 / 4 * 5 + 6;
-    variable3 = variable1 > variable2;
-    variable3 = variable1 > variable2;
-    variable3 = variable1 < variable2;
-    variable3 = variable1 != variable2;
-
-    if(variable1 > variable2) {
-        variable3 = 3.54 - 4.5 / 5.6 + 6.7;
-    } else {
-        variable3 = variable1 + variable2;
-    }
-    while(variable2 != 3.4){
-      variable2 = variable2 + 1.0;
-    }
-    function_name();
-    solve(variable1, variable2, variable3);
-
-    print("Hello World", variable1, variable2, "World Hello");
-    print("Hello World", "World Hello", variable2, variable3);
+    variable2 = 5 / 3;
+    print("Vamonos alv");
+    print(variable2);
 }
 end
+

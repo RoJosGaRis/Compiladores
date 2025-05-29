@@ -1,5 +1,11 @@
 %{
 #include "../syntax/example.h"
+
+extern void *parser;  // referencia al parser Lemon
+extern void Parse(void *parser, int token, char* value, void *scanner);  // función generada por Lemon
+
+char string_buffer[1024];
+int string_index = 0;
 %}
 
 %option noyywrap
@@ -38,10 +44,30 @@
 "="                       { return TKN_ASSIGN; }
 "<"                       { return TKN_LT; }
 ">"                       { return TKN_GT; }
-["]                       {BEGIN(DOUBLE_QUOTED);}
-<DOUBLE_QUOTED>[^"]+      {}
-<DOUBLE_QUOTED>["]        {BEGIN(INITIAL); return TKN_STRING_CONST;}
-<DOUBLE_QUOTED><<EOF>>    {return -1;}
+\"                        { string_index = 0; BEGIN(DOUBLE_QUOTED); }
+
+<DOUBLE_QUOTED>[^\"\n]+   {
+                            int len = yyleng;
+                            if (string_index + len >= sizeof(string_buffer)) {
+                                fprintf(stderr, "String literal too long\n");
+                                exit(1);
+                            }
+                            strncpy(&string_buffer[string_index], yytext, len);
+                            string_index += len;
+                          }
+
+<DOUBLE_QUOTED>\"         {
+                            string_buffer[string_index] = '\0';
+                            BEGIN(INITIAL);
+                            Parse(parser, TKN_STRING_CONST, string_buffer, NULL); // <- pasa string a parser
+                            return TKN_STRING_CONST;
+                          }
+
+<DOUBLE_QUOTED><<EOF>>    {
+                            fprintf(stderr, "Unterminated string constant\n");
+                            exit(1);
+                          }
+
 [a-zA-Z][0-9a-zA-Z_]*     { return TKN_ID; }
 [0-9]+                    { return TKN_INT_CONST; }
 [0-9]+"."[0-9]*           { return TKN_FLOAT_CONST; }

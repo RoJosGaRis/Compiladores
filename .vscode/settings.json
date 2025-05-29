@@ -38,6 +38,9 @@
     "tokennode.h": "c",
     "example.h": "c",
     "string.h": "c",
-    "structs.h": "c"
+    "structs.h": "c",
+    "machinedriver.h": "c",
+    "machinecontext.h": "c",
+    "operations.h": "c"
   }
 }
