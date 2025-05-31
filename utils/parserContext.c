@@ -1,20 +1,5 @@
 #include "parserContext.h"
 
-void initMemoryMap(ParserContext * ctx)
-{
-  // ctx->INT_VARIABLES = NULL;
-  // ctx->INT_TEMPS = NULL;
-  // ctx->FLOAT_VARIABLES = NULL; 
-  // ctx->FLOAT_TEMPS = NULL;
-  // ctx->STRING_TEMPS = NULL;
-  
-  // ctx->INT_VARIABLES = malloc(sizeof(int) * ctx->INT_VARIABLES_COUNT);
-  // ctx->FLOAT_VARIABLES = malloc(sizeof(int) * ctx->FLOAT_VARIABLES_COUNT);
-  ctx->INT_CONSTANTS = malloc(sizeof(int));
-  ctx->FLOAT_CONSTANTS = malloc(sizeof(float));
-  ctx->STRING_CONSTANTS = malloc(sizeof(char*));
-}
-
 void initContext(ParserContext * ctx)
 {
   sInitialize(&ctx->operations);
@@ -23,6 +8,74 @@ void initContext(ParserContext * ctx)
   ctx->quadList = malloc(sizeof(QuadList));
   ctx->quadList->quadruples = NULL;
   ctx->quadList->count = 0;
+  
+  ctx->FUNCTION_COUNT = 0;
+  ctx->FUNCTION_ID_LIST = (char**)malloc(sizeof(char*));
+}
+
+void programStart(char* id, ParserContext * ctx){
+  addFunction(&ctx->functionTable, id, "void");
+  ctx->programFunction = findFunction(&ctx->functionTable, id);
+  // printf("Found program function\n");
+  ctx->currentFunction = NULL;
+  initContext(ctx);
+  ctx->FUNCTION_COUNT++;
+  addQuad(OP_GOTO, -1, 0, -1, ctx);
+}
+
+void foundMain(ParserContext * ctx){
+  ctx->programFunction->startQuad = ctx->quadList->count;
+  ctx->quadList->quadruples[0].addRight = ctx->quadList->count;
+}
+
+void functionStart(char * id, ParserContext * ctx){
+  addFunction(&ctx->functionTable, id, "void");
+  // printf("Added function: %s\n", id);
+  FunctionEntry * function = findFunction(&ctx->functionTable, id);
+  // printf("Found function: %s\n", function->name);
+  ctx->currentFunction = function;
+  ctx->FUNCTION_COUNT++;
+  ctx->FUNCTION_ID_LIST = realloc(ctx->FUNCTION_ID_LIST, sizeof(char*) * ctx->FUNCTION_COUNT);
+  if (!ctx->FUNCTION_ID_LIST) {
+    fprintf(stderr, "Error reallocating FUNCTION_ID_LIST\n");
+    exit(EXIT_FAILURE);
+  }
+  ctx->FUNCTION_ID_LIST[ctx->FUNCTION_COUNT - 1] = id;
+  function->index = ctx->FUNCTION_COUNT-1;
+  function->startQuad = ctx->quadList->count;
+}
+
+void functionEnd(ParserContext * ctx){
+  addQuad(OP_ENDFUNC, -1, -1, -1, ctx);
+  ctx->currentFunction = NULL;
+}
+
+void functionCallStart(char*id, ParserContext * ctx){
+  FunctionEntry * function = (FunctionEntry*)malloc(sizeof(FunctionEntry));
+  HASH_FIND_STR(ctx->functionTable, id, function);
+  addQuad(OP_ERA, -1, function->index, -1, ctx);
+}
+
+void functionParameterAdded(char* exp, ParserContext * ctx){
+  int value = sPop(&ctx->operators);
+  addQuad(OP_PARAM, -1, value, ctx->FUNCTION_CALL_PARAMETER_COUNT++,ctx);
+}
+
+void functionCallEnd(char* id, ParserContext * ctx){
+  FunctionEntry * function = (FunctionEntry*)malloc(sizeof(FunctionEntry));
+  HASH_FIND_STR(ctx->functionTable, id, function);
+  if(ctx->FUNCTION_CALL_PARAMETER_COUNT < function->PARAM_COUNT){
+    printf("Missing %d parameters for function call to %s", function->PARAM_COUNT - ctx->FUNCTION_CALL_PARAMETER_COUNT, id);
+    exit(1);
+  }
+  if(ctx->FUNCTION_CALL_PARAMETER_COUNT > function->PARAM_COUNT){
+    printf("%d - %d\n", ctx->FUNCTION_CALL_PARAMETER_COUNT, function->PARAM_COUNT);
+    printf("Too many parameters for function call to %s\n", id);
+    exit(1);
+  }
+
+  addQuad(OP_GOSUB, -1, function->index, -1, ctx);
+  ctx->FUNCTION_CALL_PARAMETER_COUNT = 0;
 }
 
 void printContextVariables(ParserContext * ctx)
@@ -43,37 +96,52 @@ void printContextVariables(ParserContext * ctx)
 
 int handleQuad(int id1, int id2, OPERATORS op, ParserContext * ctx)
 {
-  TYPES resultingType = getResultingType(vAddressToType(id1), op, vAddressToType(id2));
-  if (resultingType == TYPE_ERROR) {
-    printf("\n%d %d %d\n", id1, op, id2);
-    printf(typeToString(vAddressToType(id1)));
-    printf(opToString(vAddressToType(op)));
-    printf(typeToString(vAddressToType(id2)));
-    fprintf(stderr, "ERROR de Tipos, no se puede ejecutar la operación\n");
-    exit(EXIT_FAILURE);  // Detiene el programa con código de 
-
-  }
-  int vAddress;
   // OPERATORS oper = stringToOp(op);
   //printf("\n%d\t%d\t%d\t%d\n", op, id1, id2, vAddress);
+  int vAddress;
   if(op == OP_EQ) addQuad(op, -1, id2, id1, ctx);
   else {
+    TYPES resultingType = getResultingType(vAddressToType(id1), op, vAddressToType(id2));
+    if (resultingType == TYPE_ERROR) {
+      printf("\n%d %d %d\n", id1, op, id2);
+      printf(typeToString(vAddressToType(id1)));
+      printf(opToString(vAddressToType(op)));
+      printf(typeToString(vAddressToType(id2)));
+      printf("ERROR de Tipos, no se puede ejecutar la operación\n");
+      exit(EXIT_FAILURE);  // Detiene el programa con código de 
+  
+    }
     switch (resultingType)
     {
       case TYPE_INT:
-        vAddress = (int)ctx->INT_TEMPS_COUNT + INT_TEMPS_SEGMENT;
+        if(ctx->currentFunction){
+          vAddress = (int)ctx->currentFunction->INT_TEMPS_COUNT + INT_TEMPS_SEGMENT;
+          ctx->currentFunction->INT_TEMPS_COUNT++;
+        } else {
+          vAddress = (int)ctx->INT_TEMPS_COUNT + INT_TEMPS_SEGMENT;
+          ctx->INT_TEMPS_COUNT++;
+        }
         addQuad(op, id1, id2, vAddress, ctx);
-        ctx->INT_TEMPS_COUNT++;
       break;
       case TYPE_FLOAT:
-        vAddress = (int)ctx->FLOAT_TEMPS_COUNT + FLOAT_TEMPS_SEGMENT;
+        if(ctx->currentFunction){
+          vAddress = (int)ctx->currentFunction->FLOAT_TEMPS_COUNT + FLOAT_TEMPS_SEGMENT;
+          ctx->currentFunction->FLOAT_TEMPS_COUNT++;
+        }else{
+          vAddress = (int)ctx->FLOAT_TEMPS_COUNT + FLOAT_TEMPS_SEGMENT;
+          ctx->FLOAT_TEMPS_COUNT++;
+        }
         addQuad(op, id1, id2, vAddress, ctx);
-        ctx->FLOAT_TEMPS_COUNT++;
       break;
       case TYPE_BOOL:
-        vAddress = (int)ctx->BOOL_TEMPS_COUNT + BOOL_TEMPS_SEGMENT;
+        if(ctx->currentFunction){
+          vAddress = (int)ctx->currentFunction->BOOL_TEMPS_COUNT + BOOL_TEMPS_SEGMENT;
+          ctx->currentFunction->BOOL_TEMPS_COUNT++;
+        }else{
+          vAddress = (int)ctx->BOOL_TEMPS_COUNT + BOOL_TEMPS_SEGMENT;
+          ctx->BOOL_TEMPS_COUNT++;
+        }
         addQuad(op, id1, id2, vAddress, ctx);
-        ctx->BOOL_TEMPS_COUNT++;
       break;
       
     default:
@@ -85,11 +153,11 @@ int handleQuad(int id1, int id2, OPERATORS op, ParserContext * ctx)
 
 void quadsSolve(ParserContext * ctx)
 {
-  //printf("Solving");
   while(!sIsEmpty(&ctx->operators) && !sIsEmpty(&ctx->operations))
   {
     int right = sPop(&ctx->operators);
     int left = sPop(&ctx->operators);
+    // printf("Right %d Left %d\n", right, left);
     // handleQuad(left,right,sPop(&ctx->operations),&ctx);
     
     sPush(&ctx->operators, handleQuad(left,right,sPop(&ctx->operations),ctx));
@@ -99,7 +167,9 @@ void quadsSolve(ParserContext * ctx)
 
 void handleOperator(char * id1, ParserContext * ctx)
 {
-  VariableEntry * var1 = findVariable(&ctx->programFunction->variableTable, id1);
+  // printf("HandleOperator: %s\n", id1);
+  VariableEntry * var1 = findVariable(id1, ctx);
+  // printf("HandleOperator:exit\n");
   sPush(&ctx->operators, var1->VAddress);
 }
 
@@ -110,8 +180,11 @@ void handleOperation(char * op, ParserContext * ctx){
     int right = sPop(&ctx->operators);
     int left = sPop(&ctx->operators);
     // handleQuad(left,right,sPop(&ctx->operations),&ctx);
+    // printf("Popping in handleOperation\nRight %d Left %d", right, left);
+    // printf("Pushing Operation %s\n", op);
     sPush(&ctx->operators, handleQuad(left,right,sPop(&ctx->operations),ctx));
   }
+  // printf("Pushing Operation %s\n", op);
   sPush(&ctx->operations, stringToOp(op));
 }
 
@@ -138,6 +211,7 @@ void handleCycleConditionStart(ParserContext * ctx){
   sPush(&ctx->goToAddresses, ctx->quadList->count);
 }
 void handleCycleStart(ParserContext * ctx){
+  // printf("Este");
   addQuad(OP_GOTOF, sPop(&ctx->operators), -1, -1,ctx);
   sPush(&ctx->goToAddresses, ctx->quadList->count-1);
 }
@@ -149,10 +223,12 @@ void handleCycleEnd(ParserContext * ctx) {
 }
 
 void handlePrintString(char* val, ParserContext * ctx){
-  printf("Got string: %s", val);
+  // printf("Got string: %s\n", val);
   addQuad(OP_PRINT, ctx->STRING_CONSTANTS_COUNT + STRING_CONSTANTS_SEGMENT, -1, -1, ctx);
-  addConstantString(val, ctx);
+  char * val_copy = strdup(val);
+  addConstantString(val_copy, ctx);
 }
 void handlePrintExpression(char* exp, ParserContext * ctx){
+  // printf("Got expression\n");
   addQuad(OP_PRINT, sPop(&ctx->operators), -1, -1, ctx);
 }

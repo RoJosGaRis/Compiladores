@@ -1,0 +1,17 @@
+program name;
+var valor, a, b, resultado : int;
+main
+{
+    valor = 10;
+    resultado = valor;
+    print("Sacando factorial de: ", valor, "\n");
+
+    while(valor > 1) {
+      valor = valor - 1;
+      print(resultado, " * ", valor, " = ");
+      resultado = resultado * valor;
+      print(resultado , "\n");
+    };
+}
+end
+

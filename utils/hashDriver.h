@@ -13,11 +13,12 @@
 
 void handleVariableList(StringList* vars, ParserContext * ctx, const char* type);
 void addVariable(VariableEntry **table, const char *id, const char* type, int VAddress);
+void addToFunctionSignature(const char* type, ParserContext * ctx);
 void addConstantInt(char* val, ParserContext * ctx);
 void addConstantFloat(char* val, ParserContext * ctx);
 void addConstantString(char * val, ParserContext * ctx);
 void deleteVariable(struct VariableEntry **table, char * id);
-struct VariableEntry * findVariable(struct VariableEntry **table, char *id);
+struct VariableEntry *findVariable(char *id, ParserContext * ctx);
 void printVariableTable(VariableEntry* table);
 void addFunction(FunctionEntry **table, const char *id, const char* type);
 void deleteFunction(struct FunctionEntry **table, char * id);

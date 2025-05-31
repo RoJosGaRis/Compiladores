@@ -41,51 +41,50 @@ int main(int argc, char** argv){
 
   yyscan_t scanner;
   yylex_init(&scanner);
+  char *parsedText = NULL;
+  yyset_extra(&parsedText, scanner);
   yyset_in(file, scanner);
   
   struct Queue q;
   qInitialize(&q);
   
   parser = ParseAlloc(malloc);
-  
   int lexCode;
   do{
     lexCode = yylex(scanner);
-    TokenNode* newToken = (TokenNode*)malloc(sizeof(TokenNode));
-    newToken->text = strdup(yyget_text(scanner));
-    newToken->type = lexCode;
-    enqueue(&q, newToken);
-    
-    Parse(parser, newToken->type, newToken->text, ctx);
+    char* value = strdup(yyget_text(scanner));
+
+    if (lexCode == TKN_STRING_CONST) {
+      char * parsedCopy = strdup(parsedText);
+      Parse(parser, TKN_STRING_CONST, parsedCopy, ctx);
+      parsedText = NULL;
+    } else {
+        Parse(parser, lexCode, value, ctx);
+    }
+    // TokenNode* newToken = (TokenNode*)malloc(sizeof(TokenNode));
+    // newToken->text = strdup(yyget_text(scanner));
+    // newToken->type = lexCode;
+    // // enqueue(&q, newToken);
+    // Parse(parser, newToken->type, value, ctx);
   } while(lexCode > 0);
-  printFunctionTable(ctx->functionTable);
+  // printFunctionTable(ctx->functionTable);
   FILE *newFilePtr;
   char filename[256];  // Enough space for most filenames
 
-  printf("%s", ctx->programFunction);
+  // printf("%s", ctx->programFunction);
   sprintf(filename, "%s.txt", ctx->programFunction->name);
   newFilePtr = fopen(filename, "w");
 
   if (newFilePtr == NULL) {
-      fprintf(stderr, "Error: Could not create file %s\n", filename);
-      exit(EXIT_FAILURE);
+    fprintf(stderr, "Error: Could not create file %s\n", filename);
+    exit(EXIT_FAILURE);
   }
+  // printf("Print Quads\n");
   printQuads(newFilePtr, ctx);
   fclose(newFilePtr);
-  // initMemoryMap(ctx);
-  // printContextVariables(ctx);
-  // TokenNode* token;
-  // while(!isEmpty(&q))
-  // {
-  //   token = dequeue(&q);
-  //   printf("Token: %s - Value: %d\n", token->text, token->type);
-  //   free(token->text);
-  //   free(token);
-  // }
-
-  yylex_destroy(scanner);
   ParseFree(parser, free);
-
+  yylex_destroy(scanner);
+  // printf("Machine run");
   machine_run(filename);
 
   return 0;

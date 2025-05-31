@@ -31,6 +31,10 @@ typedef struct ParserContext{
   int     FLOAT_TEMPS_COUNT;
   int     BOOL_TEMPS_COUNT;
   int     STRING_CONSTANTS_COUNT;
+
+  char**  FUNCTION_ID_LIST;
+  int     FUNCTION_COUNT;
+  int    FUNCTION_CALL_PARAMETER_COUNT;
   
 } ParserContext;
 

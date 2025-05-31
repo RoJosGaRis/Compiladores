@@ -1,0 +1,19 @@
+program name;
+var limite, a, b, resultado : int;
+main
+{
+    resultado = 0;
+    limite = 100;
+    print("Limite: ", limite, "\n");
+    a = 1;
+    print("Inicio: ", a, "\n");
+
+    while(resultado < limite) {
+      print("resultado: ", resultado, "\n");
+      b = a + resultado;
+      a = resultado;
+      resultado = b;
+    };
+}
+end
+

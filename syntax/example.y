@@ -1,9 +1,18 @@
 %type vars_prm_prm {StringList*}
 %type params {StringList*}
+%type param_def {StringList*}
 %type cte_float {float}
 %type cte_int {int}
+%type type {char*}
+%type f_call_start {char*}
 
 %token_type {char*}
+%token_destructor {
+  if ($$) {
+    //printf("Destructor called on string: [%s]\n", $$);
+    free($$);
+  }
+}
 
 %include {
 #include "example.h"
@@ -11,24 +20,22 @@
 #include <assert.h>
 }
 
-
 %extra_argument {ParserContext* ctx}
 
 %syntax_error {
   printf("Syntax error! At: %s" , yyminor);
+  exit(1);
 }
 
-program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions TKN_MAIN body program_end . 
+program ::= TKN_PROGRAM program_id TKN_SEMI_COLON vars functions program_main body program_end . 
 
-program_id(ID) ::= TKN_ID(ID) . {
-  addFunction(&ctx->functionTable, ID, "void");
-  ctx->programFunction = findFunction(&ctx->functionTable, ID);
-  ctx->currentFunction = NULL;
-  initContext(ctx);
-  ID = strdup(ID);
-  //printf("Program name: %s\n", ID);
+program_id ::= TKN_ID(ID) . {
+  programStart(ID, ctx);
+  //ID = strdup(ID);
 }
-
+program_main ::= TKN_MAIN . {
+  foundMain(ctx);
+}
 program_end ::= TKN_END . {
   //printf("End of program\n");
   //ctx->programFunction = NULL;
@@ -38,9 +45,11 @@ program_end ::= TKN_END . {
 vars ::= TKN_VAR vars_prm .
 vars ::= .
 vars_prm ::= vars_prm_prm(V) TKN_COLON type(T) TKN_SEMI_COLON . {
+  //printf("TYPE: %s\n", T);
   handleVariableList(V, ctx, T);
 }
 vars_prm ::= vars_prm_prm(V) TKN_COLON type(T) TKN_SEMI_COLON vars_prm. {
+  //printf("TYPE: %s\n", T);
   handleVariableList(V, ctx, T);
 }
 vars_prm_prm(V) ::= TKN_ID(T) . {
@@ -54,17 +63,21 @@ vars_prm_prm(V) ::= TKN_ID(T) TKN_COMMA vars_prm_prm(VP) . {
   V ->next = VP;
 }
 
-type ::= TKN_INT .
-type ::= TKN_FLOAT .
+type(T) ::= TKN_INT(TI) . {
+  T = TI;
+}
+type(T) ::= TKN_FLOAT(TF) . {
+  T = TF;
+}
 
 functions ::= function functions .
 functions ::= .
 
-function ::= TKN_VOID function_id TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end . 
+function ::= TKN_VOID function_start TKN_LPAREN params TKN_RPAREN TKN_LBRACKET vars body TKN_RBRACKET function_end . 
 
-function_id ::= TKN_ID(TI) . {
-  addFunction(&ctx->functionTable, TI, "void");
-  ctx->currentFunction = findFunction(&ctx->functionTable, TI);
+function_start ::= TKN_ID(TI) . {
+  functionStart(TI, ctx);
+
   //printf("Current Function: %s\n",TI);
 }
 
@@ -73,16 +86,21 @@ params(PARAMS) ::= TKN_ID(TI) TKN_COLON type(T). {
   PARAMS->id = strdup(TI);
   PARAMS->next = NULL;
   handleVariableList(PARAMS, ctx, T);
+  addToFunctionSignature(T, ctx);
 }
-params(PARAMS) ::= TKN_ID(TI) TKN_COLON type(T) TKN_COMMA params .{
+
+params ::= param_def TKN_COMMA params .
+
+param_def(PARAMS) ::= TKN_ID(TI) TKN_COLON type(T) . {
   PARAMS = malloc(sizeof(StringList*));
   PARAMS->id = strdup(TI);
   PARAMS->next = NULL;
   handleVariableList(PARAMS, ctx, T);
+  addToFunctionSignature(T, ctx);
 }
 
 function_end ::= TKN_SEMI_COLON . {
-  ctx->currentFunction = NULL;
+  functionEnd(ctx);
   //printf("Exiting function\n");
 }
 
@@ -119,7 +137,22 @@ cycle_end ::= TKN_SEMI_COLON . {
 }
 cycle ::= cycle_condition_start cycle_expression TKN_RPAREN body cycle_end.
 
-f_call ::= TKN_ID TKN_LPAREN call TKN_RPAREN TKN_SEMI_COLON .
+f_call ::= f_call_start(TKN) call TKN_RPAREN TKN_SEMI_COLON . {
+  functionCallEnd(TKN, ctx);
+}
+
+f_call_start(TKN) ::= TKN_ID(TI) TKN_LPAREN . {
+  functionCallStart(TI, ctx);
+  TKN = TI;
+}
+call ::= .
+call ::= call_expression call_prm .
+call_expression ::= expression(E) . {
+  functionParameterAdded(E, ctx);
+}
+
+call_prm ::= TKN_COMMA call .
+call_prm ::= .
 
 print ::= TKN_PRINT TKN_LPAREN print_prm TKN_RPAREN TKN_SEMI_COLON .
 
@@ -128,6 +161,7 @@ string_to_print ::= TKN_STRING_CONST(TKN) . {
 }
 expression_to_print ::= expression(E) .
 {
+  //printf("Got exp: %s\n", E);
   handlePrintExpression(E, ctx);
 }
 print_prm ::= string_to_print print_prm_prm .
@@ -184,11 +218,7 @@ factor_prm ::= TKN_ID(F) .
 factor_prm ::= cte_int .
 factor_prm ::= cte_float .
 
-call ::= .
-call ::= expression call_prm .
 
-call_prm ::= TKN_COMMA call .
-call_prm ::= .
 
 cte_int ::= TKN_INT_CONST(TK) . 
 {

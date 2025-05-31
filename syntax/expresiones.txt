@@ -1,0 +1,47 @@
+program name;
+var a, b : int; c, d : float;
+void dividir_float(a:float, b:float) [
+  var resultado : float;
+  {
+    resultado = a / b;
+    print(a, " / ", b, " = ", resultado, "\n");
+  }
+];
+void dividir_int(a:int, b:int) [
+  var resultado : float;
+  {
+    resultado = a / b;
+    print(a, " / ", b, " = ", resultado, "\n");
+  }
+];
+void multiplicar_float(a:float, b:float) [
+  var resultado : float;
+  {
+    resultado = a * b;
+    print(a, " * ", b, " = ", resultado, "\n");
+  }
+];
+void multiplicar_int(a:int, b:int) [
+  var resultado : int;
+  {
+    resultado = a * b;
+    print(a, " * ", b, " = ", resultado, "\n");
+  }
+];
+main
+{
+  a = 10;
+  b = 5;
+  c = 49.3;
+  d = 23.4;
+  print("a: ", a, "\n");
+  print("b: ", b, "\n");
+  print("c: ", c, "\n");
+  print("d: ", d, "\n");
+  multiplicar_float(c, d);
+  multiplicar_int(a, b);
+  dividir_float(c, d);
+  dividir_int(a, b);
+}
+end
+

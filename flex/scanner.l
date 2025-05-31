@@ -1,5 +1,6 @@
 %{
 #include "../syntax/example.h"
+#include "../utils/stringUtils.h"
 
 extern void *parser;  // referencia al parser Lemon
 extern void Parse(void *parser, int token, char* value, void *scanner);  // función generada por Lemon
@@ -10,8 +11,9 @@ int string_index = 0;
 
 %option noyywrap
 %option reentrant
+%option extra-type="char **"
 
-%x DOUBLE_QUOTED
+%x STRING
 
 %%
 
@@ -44,29 +46,30 @@ int string_index = 0;
 "="                       { return TKN_ASSIGN; }
 "<"                       { return TKN_LT; }
 ">"                       { return TKN_GT; }
-\"                        { string_index = 0; BEGIN(DOUBLE_QUOTED); }
 
-<DOUBLE_QUOTED>[^\"\n]+   {
-                            int len = yyleng;
-                            if (string_index + len >= sizeof(string_buffer)) {
-                                fprintf(stderr, "String literal too long\n");
-                                exit(1);
-                            }
-                            strncpy(&string_buffer[string_index], yytext, len);
-                            string_index += len;
-                          }
+\"                        { string_index = 0; BEGIN(STRING); }
 
-<DOUBLE_QUOTED>\"         {
-                            string_buffer[string_index] = '\0';
-                            BEGIN(INITIAL);
-                            Parse(parser, TKN_STRING_CONST, string_buffer, NULL); // <- pasa string a parser
-                            return TKN_STRING_CONST;
-                          }
+<STRING>[^\"\n]+         {
+    int len = yyleng;
+    if (string_index + len < sizeof(string_buffer)) {
+        strncpy(&string_buffer[string_index], yytext, len);
+        string_index += len;
+    }
+}
 
-<DOUBLE_QUOTED><<EOF>>    {
-                            fprintf(stderr, "Unterminated string constant\n");
-                            exit(1);
-                          }
+<STRING>\\.               {
+    if (string_index + 2 < sizeof(string_buffer)) {
+        string_buffer[string_index++] = yytext[0];
+        string_buffer[string_index++] = yytext[1];
+    }
+}
+
+<STRING>\"                {
+    string_buffer[string_index] = '\0';
+    *yyextra = strdup(string_buffer);  // raw string
+    BEGIN(INITIAL);
+    return TKN_STRING_CONST;
+}
 
 [a-zA-Z][0-9a-zA-Z_]*     { return TKN_ID; }
 [0-9]+                    { return TKN_INT_CONST; }

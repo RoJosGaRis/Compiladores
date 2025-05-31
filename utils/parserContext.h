@@ -14,6 +14,13 @@
 
 void initMemoryMap(ParserContext * ctx);
 void initContext(ParserContext * ctx);
+void programStart(char* id, ParserContext * ctx);
+void foundMain(ParserContext * ctx);
+void functionStart(char * id, ParserContext * ctx);
+void functionEnd(ParserContext * ctx);
+void functionCallStart(char*id, ParserContext * ctx);
+void functionParameterAdded(char* exp, ParserContext * ctx);
+void functionCallEnd(char* id, ParserContext * ctx);
 void printContextVariables(ParserContext * ctx);
 int handleQuad(int id1, int id2, OPERATORS op, ParserContext * ctx);
 void handleOperation(char * op, ParserContext * ctx);

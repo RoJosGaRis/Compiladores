@@ -1,0 +1,20 @@
+program name;
+var valor : int;
+void factorial(a:int, b:int) [
+  var resultado : int;
+  {
+    resultado = a * b;
+    print(a, " * ", b, " = ", resultado, "\n");
+    b = b - 1;
+    if(b > 0){
+      factorial(resultado, b);
+    };
+  }
+];
+main
+{
+    valor = 10;
+    factorial(10, valor - 1);
+}
+end
+

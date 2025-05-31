@@ -1,0 +1,27 @@
+program name;
+var limite, inicio1, inicio2 : int;
+void fibonacci(a:int, b:int) [
+  var resultado : int;
+  {
+    resultado = a + b;
+    print("a: ", a , "\n");
+    print("b: ", b , "\n");
+    print("resultado: ", resultado, "\n");
+    print("limite: ", limite, "\n");
+    if(resultado < limite){
+      fibonacci(b, resultado);
+    };
+  }
+];
+main
+{
+    limite = 100;
+    print("Limite: ", limite, "\n");
+    inicio1 = 0;
+    print("Inicio: ", inicio1, "\n");
+    inicio2 = 2 - 1;
+    print("Inicio2: ", inicio2, "\n");
+    fibonacci(inicio1, inicio2);
+}
+end
+

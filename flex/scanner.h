@@ -223,7 +223,7 @@ void yyfree ( void * , yyscan_t yyscanner );
 
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0
-#define DOUBLE_QUOTED 1
+#define STRING 1
 
 #endif
 
@@ -235,9 +235,7 @@ void yyfree ( void * , yyscan_t yyscanner );
 #include <unistd.h>
 #endif
     
-#ifndef YY_EXTRA_TYPE
-#define YY_EXTRA_TYPE void *
-#endif
+#define YY_EXTRA_TYPE char **
 
 int yylex_init (yyscan_t* scanner);
 
@@ -485,9 +483,9 @@ extern int yylex (yyscan_t yyscanner);
 #undef yyTABLES_NAME
 #endif
 
-#line 76 "flex/scanner.l"
+#line 79 "flex/scanner.l"
 
 
-#line 491 "flex/scanner.h"
+#line 489 "flex/scanner.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */
